@@ -26,7 +26,7 @@ Make the agent able to diagnose and repair the one problem this module solves. `
 
 ## Install
 
-- UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/TweenSystemFixer/Scripts`
+- UPM git URL: `https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/TweenSystemFixer/Scripts`
 - Editor-only; no dependencies. Only needed alongside `OxGKit.TweenSystem` + DOTween Pro.
 - Editor tooling (assembly `OxGKit.TweenSystemFixer.Editor`, auto-referenced) and Unity CLI command (`unity command oxgkit.tween repair_dotween_modules_guid`, declared in `OxGKit.TweenSystemFixer.Editor.UnityCli`, compiled only when `com.unity.pipeline` 1.x is installed): see "Fix option A".
 

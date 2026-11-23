@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+## [1.0.4] - 2026-11-23
+- Updated the GitHub URLs to the new location of the repositories (https://github.com/cout-m6o): package.json (author, dependencies) and the AI Agent Skill sample (install URL, links).
+
 ## [1.0.3] - 2026-11-23
 - Fixed SaveData/DeleteData corrupting other keys whose name ends with the same text (e.g. "volume" and "bgm_volume"), the data line of a key is now located line by line instead of replacing substrings in the whole text.
 - Fixed DeleteData not removing a line that ends with CRLF or a last line without a newline (it now removes every line of the key, including duplicated lines), and SaveData appending onto the last line when the stored text does not end with a newline.

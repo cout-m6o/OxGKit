@@ -26,7 +26,7 @@ Make the agent behave like an experienced OxGKit.LoggingSystem user. LoggingSyst
 
 ## Install
 
-- UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts`
+- UPM git URL: `https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts`
 - Auto dependency: `com.domybest.lwmybox` (LWMyBox, inspector attributes).
 - Samples (Package Manager > OxGKit.LoggingSystem > Samples): `LoggingLauncher Prefab` (bootstrap prefab), `LoggingSystem Demo`, `AI Agent Skills` (this skill).
 - Editor tooling (assembly `OxGKit.LoggingSystem.Editor`, auto-referenced) and Unity CLI commands (`unity command oxgkit.logging ...`, declared in `OxGKit.LoggingSystem.Editor.UnityCli`, compiled only when `com.unity.pipeline` 1.x is installed): see "Editor entry points".

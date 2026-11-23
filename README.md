@@ -2,7 +2,7 @@
   <img width="384" height="384" src="Docs/OxGKit_Logo_v1.png">
 </p>
 
-[![License](https://img.shields.io/github/license/michael811125/OxGKit)](https://github.com/michael811125/OxGKit/blob/master/LICENSE.md)
+[![License](https://img.shields.io/github/license/cout-m6o/OxGKit)](https://github.com/cout-m6o/OxGKit/blob/master/LICENSE.md)
 
 ---
 
@@ -19,25 +19,25 @@
 
 OxGKit 是基於 Unity 設計於遊戲開發常用的系統工具組 (皆為獨立工具)。
 
-[Coding Style wiki](https://github.com/michael811125/OxGFrame/wiki/Coding-Style)
+[Coding Style wiki](https://github.com/cout-m6o/OxGFrame/wiki/Coding-Style)
 
 **目前包含以下**
 
-- [日誌系統 (Logging System)](https://github.com/michael811125/OxGKit#loggingsystem-dependence-lwmybox)
-- [無限列表 (Infinite ScrollView)](https://github.com/michael811125/OxGKit#infinitescrollview-dependence-unitask-oxgkitloggingsystem)
-- [動作序列系統 (Action System)](https://github.com/michael811125/OxGKit#actionsystem-dependence-unitask-oxgkitloggingsystem)
-- [通知系統 (Notice System)](https://github.com/michael811125/OxGKit#noticesystem-or-reddotsystem-dependence-oxgkitloggingsystem)
-- [輸入控制系統 (Input System)](https://github.com/michael811125/OxGKit#inputsystem-dependence-unity-new-inputsystem-oxgkitloggingsystem)
-- [DoTween Pro 的補間動畫系統 (TweenSystem)](https://github.com/michael811125/OxGKit#tweensystem-dependence-dotween-pro-lwmybox-oxgkittimesystem)
-- [按鈕系統 (Button System)](https://github.com/michael811125/OxGKit#buttonsystem)
-- [時間系統 (Time System)](https://github.com/michael811125/OxGKit#timesystem-dependence-unitask-oxgkitloggingsystem)
-- [鼠標系統 (Cursor System)](https://github.com/michael811125/OxGKit#cursorsystem)
-- [物件池系統 (Pool System)](https://github.com/michael811125/OxGKit#poolsystem-dependence-unitask-lwmybox-oxgkitloggingsystem)
-- [單例系統 (Singleton System)](https://github.com/michael811125/OxGKit#singletonsystem)
-- [儲存系統 (Saver System)](https://github.com/michael811125/OxGKit#saversystem)
-- [本地化系統 (Localization System)](https://github.com/michael811125/OxGKit#localizationsystem)
-- [虛擬搖桿系統 (Virtual Joystick)](https://github.com/michael811125/OxGKit#virtualjoystick)
-- [各通用必備組件工具 (Utilities)](https://github.com/michael811125/OxGKit#utilities-dependence-unitask-lwmybox-oxgkitloggingsystem)
+- [日誌系統 (Logging System)](https://github.com/cout-m6o/OxGKit#loggingsystem-dependence-lwmybox)
+- [無限列表 (Infinite ScrollView)](https://github.com/cout-m6o/OxGKit#infinitescrollview-dependence-unitask-oxgkitloggingsystem)
+- [動作序列系統 (Action System)](https://github.com/cout-m6o/OxGKit#actionsystem-dependence-unitask-oxgkitloggingsystem)
+- [通知系統 (Notice System)](https://github.com/cout-m6o/OxGKit#noticesystem-or-reddotsystem-dependence-oxgkitloggingsystem)
+- [輸入控制系統 (Input System)](https://github.com/cout-m6o/OxGKit#inputsystem-dependence-unity-new-inputsystem-oxgkitloggingsystem)
+- [DoTween Pro 的補間動畫系統 (TweenSystem)](https://github.com/cout-m6o/OxGKit#tweensystem-dependence-dotween-pro-lwmybox-oxgkittimesystem)
+- [按鈕系統 (Button System)](https://github.com/cout-m6o/OxGKit#buttonsystem)
+- [時間系統 (Time System)](https://github.com/cout-m6o/OxGKit#timesystem-dependence-unitask-oxgkitloggingsystem)
+- [鼠標系統 (Cursor System)](https://github.com/cout-m6o/OxGKit#cursorsystem)
+- [物件池系統 (Pool System)](https://github.com/cout-m6o/OxGKit#poolsystem-dependence-unitask-lwmybox-oxgkitloggingsystem)
+- [單例系統 (Singleton System)](https://github.com/cout-m6o/OxGKit#singletonsystem)
+- [儲存系統 (Saver System)](https://github.com/cout-m6o/OxGKit#saversystem)
+- [本地化系統 (Localization System)](https://github.com/cout-m6o/OxGKit#localizationsystem)
+- [虛擬搖桿系統 (Virtual Joystick)](https://github.com/cout-m6o/OxGKit#virtualjoystick)
+- [各通用必備組件工具 (Utilities)](https://github.com/cout-m6o/OxGKit#utilities-dependence-unitask-lwmybox-oxgkitloggingsystem)
 
 *[會持續擴充工具系統組]*
 
@@ -248,19 +248,19 @@ LoggingLauncher.ConfigureLogger("LoggingDemo.Logger3", false);
 
 | Install via git URL                                                                                         |
 |:----------------------------------------------------------------------------------------------------------- |
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager |
 
 **第三方庫 (需自行安裝)**
 
-- 使用 [LWMyBox v1.1.4 or higher](https://github.com/michael811125/LWMyBox), Add https://github.com/michael811125/LWMyBox.git to Package Manager
+- 使用 [LWMyBox v1.1.4 or higher](https://github.com/cout-m6o/LWMyBox), Add https://github.com/cout-m6o/LWMyBox.git to Package Manager
 
 **LoggingSystem Demo**
 
-https://github.com/michael811125/OxGKit/assets/30960759/51ecddd7-5241-43e9-9104-de45cbc5f68d
+https://github.com/cout-m6o/OxGKit/assets/30960759/51ecddd7-5241-43e9-9104-de45cbc5f68d
 
 **LoggingSystem Build Test**
 
-https://github.com/michael811125/OxGKit/assets/30960759/cef1a484-d617-466d-bf3e-6104032d7c3f
+https://github.com/cout-m6o/OxGKit/assets/30960759/cef1a484-d617-466d-bf3e-6104032d7c3f
 
 ---
 
@@ -276,12 +276,12 @@ Reference: [howtungtung - InfiniteScrollView](https://github.com/howtungtung/Inf
 
 | Install via git URL                                                                                              |
 |:---------------------------------------------------------------------------------------------------------------- |
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/InfiniteScrollView/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/InfiniteScrollView/Scripts to Package Manager |
 
 **第三方庫 (需自行安裝)**
 
 - 使用 [UniTask v2.5.0 or higher](https://github.com/Cysharp/UniTask)
-- 使用 OxGKit.LoggingSystem, Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager
+- 使用 OxGKit.LoggingSystem, Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager
 
 ※備註 : Right-Click Create/OxGKit/Infinite ScrollView... (Template cs)
 
@@ -299,16 +299,16 @@ Reference: [howtungtung - InfiniteScrollView](https://github.com/howtungtung/Inf
 
 | Install via git URL                                                                                        |
 |:---------------------------------------------------------------------------------------------------------- |
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/ActionSystem/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/ActionSystem/Scripts to Package Manager |
 
 **第三方庫 (需自行安裝)**
 
 - 使用 [UniTask v2.5.0 or higher](https://github.com/Cysharp/UniTask)
-- 使用 OxGKit.LoggingSystem, Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager
+- 使用 OxGKit.LoggingSystem, Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager
 
 **ActionSystem Demo**
 
-https://github.com/michael811125/OxGKit/assets/30960759/169d91ea-3709-420c-8751-f50119e97d35
+https://github.com/cout-m6o/OxGKit/assets/30960759/169d91ea-3709-420c-8751-f50119e97d35
 
 ※備註 : Right-Click Create/OxGKit/Action System... (Template cs)
 
@@ -328,15 +328,15 @@ https://github.com/michael811125/OxGKit/assets/30960759/169d91ea-3709-420c-8751-
 
 | Install via git URL                                                                                        |
 |:---------------------------------------------------------------------------------------------------------- |
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/NoticeSystem/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/NoticeSystem/Scripts to Package Manager |
 
 **第三方庫 (需自行安裝)**
 
-- 使用 OxGKit.LoggingSystem, Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager
+- 使用 OxGKit.LoggingSystem, Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager
 
 **NoticeSystem Demo**
 
-https://github.com/michael811125/OxGKit/assets/30960759/c6966327-3ede-432e-b8fe-bee53f629f25
+https://github.com/cout-m6o/OxGKit/assets/30960759/c6966327-3ede-432e-b8fe-bee53f629f25
 
 ※備註 : Right-Click Create/OxGKit/Notice System... (Template cs)
 
@@ -363,16 +363,16 @@ https://github.com/michael811125/OxGKit/assets/30960759/c6966327-3ede-432e-b8fe-
 
 | Install via git URL                                                                                       |
 |:--------------------------------------------------------------------------------------------------------- |
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/InputSystem/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/InputSystem/Scripts to Package Manager |
 
 **第三方庫 (需自行安裝)**
 
 - 使用 [Unity New InputSystem v1.11.2 or higher](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.11/manual/Installation.html) (com.unity.inputsystem 為套件依賴, 安裝時會自動安裝)
-- 使用 OxGKit.LoggingSystem, Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager
+- 使用 OxGKit.LoggingSystem, Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager
 
 **InputSystem Demo**
 
-https://github.com/michael811125/OxGKit/assets/30960759/20548ee4-b77b-4cda-8d49-c82b16deddb7
+https://github.com/cout-m6o/OxGKit/assets/30960759/20548ee4-b77b-4cda-8d49-c82b16deddb7
 
 ※備註 : Right-Click Create/OxGKit/Input System... (Template cs)
 
@@ -388,7 +388,7 @@ https://github.com/michael811125/OxGKit/assets/30960759/20548ee4-b77b-4cda-8d49-
 <!---
 **注意：建議先安裝 OxGKit.TweenSystemFixer，避免編譯失敗導致 MenuItem 無法顯示與啟用**
 
-- Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/TweenSystemFixer/Scripts to Package Manager
+- Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/TweenSystemFixer/Scripts to Package Manager
 --->
 
 Preview Mode (Only DoTweenAnim component is supported)
@@ -403,7 +403,7 @@ Preview Mode (Only DoTweenAnim component is supported)
 
 | Install via git URL                                                                                       |
 |:--------------------------------------------------------------------------------------------------------- |
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/TweenSystem/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/TweenSystem/Scripts to Package Manager |
 
 **第三方庫 (需自行購買安裝)**
 
@@ -411,8 +411,8 @@ Preview Mode (Only DoTweenAnim component is supported)
 
 **第三方庫 (需自行安裝)**
 
-- 使用 [LWMyBox v1.1.4 or higher](https://github.com/michael811125/LWMyBox), Add https://github.com/michael811125/LWMyBox.git to Package Manager
-- 使用 OxGKit.TimeSystem, Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/TimeSystem/Scripts to Package Manager
+- 使用 [LWMyBox v1.1.4 or higher](https://github.com/cout-m6o/LWMyBox), Add https://github.com/cout-m6o/LWMyBox.git to Package Manager
+- 使用 OxGKit.TimeSystem, Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/TimeSystem/Scripts to Package Manager
 
 <!--- ### Create DoTween Assemblies (Must use TweenSystemFixer to fix GUID) --->
 
@@ -422,7 +422,7 @@ Preview Mode (Only DoTweenAnim component is supported)
 
 **TweenSystem Demo**
 
-https://github.com/michael811125/OxGKit/assets/30960759/6bf690b6-c4d0-40f6-b3c9-b50ab62562e8
+https://github.com/cout-m6o/OxGKit/assets/30960759/6bf690b6-c4d0-40f6-b3c9-b50ab62562e8
 
 <!---
 ---
@@ -437,7 +437,7 @@ https://github.com/michael811125/OxGKit/assets/30960759/6bf690b6-c4d0-40f6-b3c9-
 
 | Install via git URL |
 |:-|
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/TweenSystemFixer/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/TweenSystemFixer/Scripts to Package Manager |
 
 ### Reassign DOTween.Modules assembly GUID (Fix Error GUID)
 
@@ -471,11 +471,11 @@ ButtonPlus 是基於繼承 Unity UGUI 的 Button 進行擴展的，功能擴展�
 
 | Install via git URL                                                                                        |
 |:---------------------------------------------------------------------------------------------------------- |
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/ButtonSystem/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/ButtonSystem/Scripts to Package Manager |
 
 **ButtonSystem Demo**
 
-https://github.com/michael811125/OxGKit/assets/30960759/891291af-1bb4-4515-bec6-a9877f4ca254
+https://github.com/cout-m6o/OxGKit/assets/30960759/891291af-1bb4-4515-bec6-a9877f4ca254
 
 ## TimeSystem (dependence UniTask, OxGKit.LoggingSystem)
 
@@ -487,16 +487,16 @@ https://github.com/michael811125/OxGKit/assets/30960759/891291af-1bb4-4515-bec6-
 
 | Install via git URL                                                                                      |
 |:-------------------------------------------------------------------------------------------------------- |
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/TimeSystem/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/TimeSystem/Scripts to Package Manager |
 
 **第三方庫 (需自行安裝)**
 
 - 使用 [UniTask v2.5.0 or higher](https://github.com/Cysharp/UniTask)
-- 使用 OxGKit.LoggingSystem, Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager
+- 使用 OxGKit.LoggingSystem, Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager
 
 **TimeSystem Demo**
 
-https://github.com/michael811125/OxGKit/assets/30960759/ee085eb4-f803-45e5-9593-b481a4b5a821
+https://github.com/cout-m6o/OxGKit/assets/30960759/ee085eb4-f803-45e5-9593-b481a4b5a821
 
 ## CursorSystem
 
@@ -508,7 +508,7 @@ Cursor 游標管理器，支持靜態與動態游標與各種狀態行為切換 
 
 | Install via git URL                                                                                        |
 |:---------------------------------------------------------------------------------------------------------- |
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/CursorSystem/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/CursorSystem/Scripts to Package Manager |
 
 **CursorSystem Demo**
 
@@ -524,13 +524,13 @@ https://github.com/user-attachments/assets/49e2a081-6d31-4ba6-8bb8-be60a148742c
 
 | Install via git URL                                                                                      |
 |:-------------------------------------------------------------------------------------------------------- |
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/PoolSystem/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/PoolSystem/Scripts to Package Manager |
 
 **第三方庫 (需自行安裝)**
 
 - 使用 [UniTask v2.5.0 or higher](https://github.com/Cysharp/UniTask)
-- 使用 [LWMyBox v1.1.4 or higher](https://github.com/michael811125/LWMyBox), Add https://github.com/michael811125/LWMyBox.git to Package Manager
-- 使用 OxGKit.LoggingSystem, Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager
+- 使用 [LWMyBox v1.1.4 or higher](https://github.com/cout-m6o/LWMyBox), Add https://github.com/cout-m6o/LWMyBox.git to Package Manager
+- 使用 OxGKit.LoggingSystem, Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager
 
 **PoolSystem Demo**
 
@@ -546,7 +546,7 @@ https://github.com/user-attachments/assets/822d2431-0ee4-487c-9331-b62257ba95fd
 
 | Install via git URL                                                                                           |
 |:------------------------------------------------------------------------------------------------------------- |
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/SingletonSystem/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/SingletonSystem/Scripts to Package Manager |
 
 ## SaverSystem
 
@@ -556,7 +556,7 @@ https://github.com/user-attachments/assets/822d2431-0ee4-487c-9331-b62257ba95fd
 
 | Install via git URL                                                                                       |
 |:--------------------------------------------------------------------------------------------------------- |
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/SaverSystem/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/SaverSystem/Scripts to Package Manager |
 
 ## LocalizationSystem
 
@@ -650,7 +650,7 @@ private void _RefreshLanguage(LangType langType)
 
 | Install via git URL                                                                                              |
 |:---------------------------------------------------------------------------------------------------------------- |
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/LocalizationSystem/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/LocalizationSystem/Scripts to Package Manager |
 
 ## VirtualJoystick
 
@@ -666,7 +666,7 @@ Reference: [annulusgames - EnhancedOnScreenStick](https://github.com/AnnulusGame
 
 | Install via git URL                                                                                           |
 |:------------------------------------------------------------------------------------------------------------- |
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/VirtualJoystick/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/VirtualJoystick/Scripts to Package Manager |
 
 ## Utilities (dependence UniTask, LWMyBox, OxGKit.LoggingSystem)
 
@@ -691,17 +691,17 @@ Reference: [annulusgames - EnhancedOnScreenStick](https://github.com/AnnulusGame
 
 | Install via git URL                                                                                     |
 |:------------------------------------------------------------------------------------------------------- |
-| Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/Utilities/Scripts to Package Manager |
+| Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/Utilities/Scripts to Package Manager |
 
-**第三方庫 (獨立安裝時，需自行安裝; 如果搭配 [OxGFrame](https://github.com/michael811125/OxGFrame) 則不需要額外安裝 UniTask)**
+**第三方庫 (獨立安裝時，需自行安裝; 如果搭配 [OxGFrame](https://github.com/cout-m6o/OxGFrame) 則不需要額外安裝 UniTask)**
 
 - 使用 [UniTask v2.5.0 or higher](https://github.com/Cysharp/UniTask)
-- 使用 [LWMyBox v1.1.4 or higher](https://github.com/michael811125/LWMyBox), Add https://github.com/michael811125/LWMyBox.git to Package Manager
-- 使用 OxGKit.LoggingSystem, Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager
+- 使用 [LWMyBox v1.1.4 or higher](https://github.com/cout-m6o/LWMyBox), Add https://github.com/cout-m6o/LWMyBox.git to Package Manager
+- 使用 OxGKit.LoggingSystem, Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts to Package Manager
 
 **Utilities Demo (RectTransformAdjuster)**
 
-https://github.com/michael811125/OxGKit/assets/30960759/cd43fc8b-c6f7-4878-990b-99dcacb8ed1f
+https://github.com/cout-m6o/OxGKit/assets/30960759/cd43fc8b-c6f7-4878-990b-99dcacb8ed1f
 
 ---
 

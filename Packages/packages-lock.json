@@ -8,7 +8,7 @@
       "hash": "a77a1b4a89824fb6df293099de3060daf2a432c1"
     },
     "com.domybest.lwmybox": {
-      "version": "https://github.com/michael811125/LWMyBox.git",
+      "version": "https://github.com/cout-m6o/LWMyBox.git",
       "depth": 0,
       "source": "git",
       "dependencies": {

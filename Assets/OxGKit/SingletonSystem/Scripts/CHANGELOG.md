@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+## [1.0.4] - 2026-11-23
+- Updated the GitHub URLs to the new location of the repositories (https://github.com/cout-m6o): package.json (author, dependencies) and the AI Agent Skill sample (install URL, links).
+
 ## [1.0.3] - 2026-11-23
 - Added SingletonCreateScriptEditor.CreateScriptTplMonoSingletonAtPath(assetPath) to create a MonoSingleton script from the template directly at a path, without the name editing of the Project window (same content as the create menu).
 - Added Unity CLI support: unity command oxgkit.singleton create_mono_singleton (optional assembly OxGKit.SingletonSystem.Editor.UnityCli, compiled only when the Unity Pipeline package com.unity.pipeline 1.x is installed).

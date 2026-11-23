@@ -26,7 +26,7 @@ Make the agent behave like an experienced OxGKit.InputSystem user. The module (U
 
 ## Install
 
-- UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/InputSystem/Scripts`
+- UPM git URL: `https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/InputSystem/Scripts`
 - Auto dependencies: `com.unity.inputsystem`, `com.michaelo.oxgkit.loggingsystem`.
 - Samples (Package Manager > OxGKit.InputSystem > Samples): `InputSystem Demo`, `AI Agent Skills` (this skill).
 - Editor tooling (assembly `OxGKit.InputSystem.Editor`, auto-referenced) and Unity CLI commands (`unity command oxgkit.input ...`, declared in `OxGKit.InputSystem.Editor.UnityCli`, compiled only when `com.unity.pipeline` 1.x is installed): see "Editor entry points".

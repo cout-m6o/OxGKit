@@ -26,7 +26,7 @@ Make the agent behave like an experienced OxGKit.InfiniteScrollView user. The mo
 
 ## Install
 
-- UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/InfiniteScrollView/Scripts`
+- UPM git URL: `https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/InfiniteScrollView/Scripts`
 - Auto dependencies: `com.cysharp.unitask`, `com.michaelo.oxgkit.loggingsystem`.
 - Samples (Package Manager > OxGKit.InfiniteScrollView > Samples): `Infinite Vertical Demo`, `Infinite Horizontal Demo`, `Infinite Grid Demo`, `Infinite TabPage Demo`, `Infinite ChatRoom Demo` (package folders `Samples~/01_Vertical` … `05_ChatRoom`), `AI Agent Skills` (this skill).
 - Editor tooling (assembly `OxGKit.InfiniteScrollView.Editor`, auto-referenced) and Unity CLI commands (`unity command oxgkit.infinite_scroll_view ...`, declared in `OxGKit.InfiniteScrollView.Editor.UnityCli`, compiled only when `com.unity.pipeline` 1.x is installed): see "Editor entry points".

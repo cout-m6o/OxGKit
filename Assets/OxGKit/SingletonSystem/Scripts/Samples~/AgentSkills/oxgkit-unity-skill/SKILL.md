@@ -26,7 +26,7 @@ Make the agent behave like an experienced OxGKit.SingletonSystem user. The modul
 
 ## Install
 
-- UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/SingletonSystem/Scripts`
+- UPM git URL: `https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/SingletonSystem/Scripts`
 - No dependencies.
 - Samples (Package Manager > OxGKit.SingletonSystem > Samples): `MonoSingleton Demo` (two scenes showing cross-scene persistence), `AI Agent Skills` (this skill).
 - Editor tooling (assembly `OxGKit.SingletonSystem.Editor`, auto-referenced) and Unity CLI commands (`unity command oxgkit.singleton ...`, declared in `OxGKit.SingletonSystem.Editor.UnityCli`, compiled only when `com.unity.pipeline` 1.x is installed): see "Editor entry points".

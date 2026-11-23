@@ -2,7 +2,7 @@
 	"name": "com.michaelo.oxgkit.infinitescrollview",
 	"displayName": "OxGKit.InfiniteScrollView",
 	"description": "InfiniteScrollView is made for Unity extension, that support use as less as possible gameObject count to achieve large infinite scrolling content. Developed by native UGUI system, no any magical code inside, so you can easily modify and extend by yourself.",
-	"version": "1.7.2",
+	"version": "1.7.3",
 	"unity": "2021.3",
 	"license": "MIT",
 	"samples": [
@@ -39,11 +39,11 @@
 	],
 	"dependencies": {
 		"com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
-		"com.michaelo.oxgkit.loggingsystem": "https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts"
+		"com.michaelo.oxgkit.loggingsystem": "https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts"
 	},
 	"author": {
 		"name": "MichaelO",
-		"url": "https://github.com/michael811125"
+		"url": "https://github.com/cout-m6o"
 	},
 	"contributors": [
 		{

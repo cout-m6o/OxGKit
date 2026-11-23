@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+## [1.1.5] - 2026-11-23
+- Updated the GitHub URLs to the new location of the repositories (https://github.com/cout-m6o): package.json (author, dependencies) and the AI Agent Skill sample (install URL, links).
+
 ## [1.1.4] - 2026-11-23
 - Fixed IntervalTimer/DTUpdater/RTUpdater staying stopped when stopped and started again in the same frame (or restarted from their own callback), the cancelled loop used to stop the new run one frame later.
 - Optimized IntervalSetter with typed tables (int ids are no longer boxed on every lookup, no 32768-entry table reserved up front, the capacity limit is unchanged).

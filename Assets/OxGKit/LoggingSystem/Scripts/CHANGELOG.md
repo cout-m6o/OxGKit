@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+## [1.4.5] - 2026-11-23
+- Updated the GitHub URLs to the new location of the repositories (https://github.com/cout-m6o): package.json (author, dependencies) and the AI Agent Skill sample (install URL, links).
+
 ## [1.4.4] - 2026-11-23
 - Added Logging.IsLogActive<TLogging>(LogLevel) to check whether a log call would output before building its message (avoids allocations for logs that are not printed).
 - Optimized CheckLogActive with bitwise checks instead of Enum.HasFlag (same result, no boxing on any scripting backend).

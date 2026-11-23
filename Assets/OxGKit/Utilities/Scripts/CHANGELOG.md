@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+## [1.4.10] - 2026-11-23
+- Updated the GitHub URLs to the new location of the repositories (https://github.com/cout-m6o): package.json (author, dependencies) and the AI Agent Skill sample (install URL, links).
+
 ## [1.4.9] - 2026-11-23
 - Optimized LRUCache to use a Dictionary inside its existing lock (ConcurrentDictionary.Count/Keys took every internal lock on each Add when full) and to reuse the evicted node (no allocation when full).
 - Optimized ARCCache with a key-to-node lookup, Get/Add/Remove are O(1) instead of linear list scans and a hit no longer allocates (eviction order unchanged, removed the ghost set that was never populated).

@@ -26,7 +26,7 @@ Make the agent behave like an experienced OxGKit.ActionSystem user. The module (
 
 ## Install
 
-- UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/ActionSystem/Scripts`
+- UPM git URL: `https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/ActionSystem/Scripts`
 - Auto dependencies: `com.cysharp.unitask`, `com.michaelo.oxgkit.loggingsystem` (v1.0.4+ of this module needs LoggingSystem 1.4.4+).
 - Samples (Package Manager > OxGKit.ActionSystem > Samples): `ActionSystem Demo`, `AI Agent Skills` (this skill).
 - Editor tooling (assembly `OxGKit.ActionSystem.Editor`, auto-referenced) and Unity CLI commands (`unity command oxgkit.action ...`, declared in `OxGKit.ActionSystem.Editor.UnityCli`, compiled only when `com.unity.pipeline` 1.x is installed): see "Editor entry points".

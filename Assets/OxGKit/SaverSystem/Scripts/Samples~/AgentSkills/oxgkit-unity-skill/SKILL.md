@@ -26,7 +26,7 @@ Make the agent behave like an experienced OxGKit.SaverSystem user. The module (U
 
 ## Install
 
-- UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/SaverSystem/Scripts`
+- UPM git URL: `https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/SaverSystem/Scripts`
 - No dependencies. Includes editor tests.
 - Samples (Package Manager > OxGKit.SaverSystem > Samples): `AI Agent Skills` (this skill).
 

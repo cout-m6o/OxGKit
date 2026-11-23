@@ -26,7 +26,7 @@ Make the agent behave like an experienced OxGKit.VirtualJoystick user. The modul
 
 ## Install
 
-- UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/VirtualJoystick/Scripts`
+- UPM git URL: `https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/VirtualJoystick/Scripts`
 - No dependencies (works with both input backends; it is UGUI-event driven).
 - Samples (Package Manager > OxGKit.VirtualJoystick > Samples): `VirtualJoystickUI Prefab` (pre-wired stick with images), `VirtualJoystick Demo`, `AI Agent Skills` (this skill).
 

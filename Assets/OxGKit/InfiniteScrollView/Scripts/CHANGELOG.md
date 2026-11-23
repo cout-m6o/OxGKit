@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+## [1.7.3] - 2026-11-23
+- Updated the GitHub URLs to the new location of the repositories (https://github.com/cout-m6o): package.json (author, dependencies) and the AI Agent Skill sample (install URL, links).
+
 ## [1.7.2] - 2026-11-23
 - Optimized the cell selection subscription with a cached delegate (no allocation each time a cell is shown or recycled).
 - Modified snapping to measure elapsed time with DateTime.UtcNow (no time zone conversion, unaffected by DST or time zone changes).

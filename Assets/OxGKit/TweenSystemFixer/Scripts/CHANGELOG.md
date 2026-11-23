@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+## [1.0.4] - 2026-11-23
+- Updated the GitHub URLs to the new location of the repositories (https://github.com/cout-m6o): package.json (author, dependencies) and the AI Agent Skill sample (install URL, links).
+
 ## [1.0.3] - 2026-11-23
 - Added DoTweenAssemblyFixer.RepairDoTweenModulesGUIDInProject() (same repair as the menu, searches the whole Assets folder without a selection and shows no dialog), FindDoTweenModulesAssetPath() and doTweenModulesFixedGUID.
 - Added Unity CLI support: unity command oxgkit.tween repair_dotween_modules_guid (optional assembly OxGKit.TweenSystemFixer.Editor.UnityCli, compiled only when the Unity Pipeline package com.unity.pipeline 1.x is installed).

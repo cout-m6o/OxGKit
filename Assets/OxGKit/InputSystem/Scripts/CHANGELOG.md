@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+## [1.0.6] - 2026-11-23
+- Updated the GitHub URLs to the new location of the repositories (https://github.com/cout-m6o): package.json (author, dependencies) and the AI Agent Skill sample (install URL, links).
+
 ## [1.0.5] - 2026-11-23
 - Fixed Inputs.CM.IsActive always returning true (SetActive modified a copy of the ControlMap struct).
 - Optimized control map / input action lookups (TryGetValue) and added double-checked locking for the InputCenter instance.

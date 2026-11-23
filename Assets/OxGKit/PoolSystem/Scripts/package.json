@@ -2,7 +2,7 @@
 	"name": "com.michaelo.oxgkit.poolsystem",
 	"displayName": "OxGKit.PoolSystem",
 	"description": "The OxGKit is a system tool kit commonly used in game development based on Unity design (all are independent tools).",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"unity": "2021.3",
 	"license": "MIT",
 	"samples": [
@@ -19,11 +19,11 @@
 	],
 	"dependencies": {
 		"com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
-		"com.domybest.lwmybox": "https://github.com/michael811125/LWMyBox.git",
-		"com.michaelo.oxgkit.loggingsystem": "https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts"
+		"com.domybest.lwmybox": "https://github.com/cout-m6o/LWMyBox.git",
+		"com.michaelo.oxgkit.loggingsystem": "https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/LoggingSystem/Scripts"
 	},
 	"author": {
 		"name": "MichaelO",
-		"url": "https://github.com/michael811125"
+		"url": "https://github.com/cout-m6o"
 	}
 }

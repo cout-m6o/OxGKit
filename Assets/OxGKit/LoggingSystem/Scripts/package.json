@@ -2,7 +2,7 @@
 	"name": "com.michaelo.oxgkit.loggingsystem",
 	"displayName": "OxGKit.LoggingSystem",
 	"description": "The OxGKit is a system tool kit commonly used in game development based on Unity design (all are independent tools).",
-	"version": "1.4.4",
+	"version": "1.4.5",
 	"unity": "2021.3",
 	"license": "MIT",
 	"samples": [
@@ -23,10 +23,10 @@
 		}
 	],
 	"dependencies": {
-		"com.domybest.lwmybox": "https://github.com/michael811125/LWMyBox.git"
+		"com.domybest.lwmybox": "https://github.com/cout-m6o/LWMyBox.git"
 	},
 	"author": {
 		"name": "MichaelO",
-		"url": "https://github.com/michael811125"
+		"url": "https://github.com/cout-m6o"
 	}
 }

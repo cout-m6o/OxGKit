@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+## [1.0.7] - 2026-11-23
+- Updated the GitHub URLs to the new location of the repositories (https://github.com/cout-m6o): package.json (author, dependencies) and the AI Agent Skill sample (install URL, links).
+
 ## [1.0.6] - 2026-11-23
 - Optimized NoticeManager/NoticeItem/ListSet lookups (single dictionary/set lookup instead of Contains + indexer).
 - Optimized notice logs to build their messages only when the logger will print them (uses Logging.IsLogActive, requires OxGKit.LoggingSystem 1.4.4+).

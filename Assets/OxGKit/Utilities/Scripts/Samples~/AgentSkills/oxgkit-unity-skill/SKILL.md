@@ -26,7 +26,7 @@ Make the agent behave like an experienced OxGKit.Utilities user. The module (UPM
 
 ## Install
 
-- UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/Utilities/Scripts`
+- UPM git URL: `https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/Utilities/Scripts`
 - Auto dependencies: `com.cysharp.unitask`, `com.domybest.lwmybox`, `com.michaelo.oxgkit.loggingsystem`.
 - Samples (Package Manager > OxGKit.Utilities > Samples): `AI Agent Skills` (this skill).
 - Editor tooling (assembly `OxGKit.Utilities.Editor`, auto-referenced) and Unity CLI commands (`unity command oxgkit.utilities ...`, declared in `OxGKit.Utilities.Editor.UnityCli`, compiled only when `com.unity.pipeline` 1.x is installed): see "Editor entry points".

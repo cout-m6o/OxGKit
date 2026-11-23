@@ -26,7 +26,7 @@ Make the agent behave like an experienced OxGKit.TweenSystem user. The module (U
 
 ## Install
 
-- UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/TweenSystem/Scripts`
+- UPM git URL: `https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/TweenSystem/Scripts`
 - Auto dependencies: `com.domybest.lwmybox`, `com.michaelo.oxgkit.timesystem`.
 - Manual dependency: **DOTween Pro** (paid asset) must be imported, and DOTween assemblies created via `Tools > Demigiant > DOTween Utility Panel > Create ASMDEF`.
 - GUID note: `OxGKit.TweenSystem` references `DOTween.Modules` by a fixed GUID (`fdf3e181e62e9d243a7fee5ce890ab71`). If the assembly reference breaks (DOTween regenerated its asmdef with a new GUID), repair it with `OxGKit.TweenSystemFixer` (menu, Editor method or Unity CLI command — see "Editor entry points"); editing `DOTween/Modules/DOTween.Modules.asmdef.meta` by hand is the fallback when the fixer cannot be installed.

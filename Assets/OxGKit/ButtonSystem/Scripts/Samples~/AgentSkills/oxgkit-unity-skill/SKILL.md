@@ -26,7 +26,7 @@ Make the agent behave like an experienced OxGKit.ButtonSystem user. The module (
 
 ## Install
 
-- UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/ButtonSystem/Scripts`
+- UPM git URL: `https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/ButtonSystem/Scripts`
 - No dependencies.
 - Samples (Package Manager > OxGKit.ButtonSystem > Samples): `ButtonPlus Demo`, `AI Agent Skills` (this skill).
 - Editor tooling (assembly `OxGKit.ButtonSystem.Editor`, auto-referenced) and Unity CLI command (`unity command oxgkit.button ...`, declared in `OxGKit.ButtonSystem.Editor.UnityCli`, compiled only when `com.unity.pipeline` 1.x is installed): see "Editor entry points".

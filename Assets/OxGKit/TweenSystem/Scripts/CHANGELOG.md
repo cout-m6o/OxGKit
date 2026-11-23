@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+## [1.0.6] - 2026-11-23
+- Updated the GitHub URLs to the new location of the repositories (https://github.com/cout-m6o): package.json (author, dependencies) and the AI Agent Skill sample (install URL, links).
+
 ## [1.0.5] - 2026-11-23
 - Optimized DoTweenAnim by removing the duplicated interval timer creation in every tween constructor, and GetMaxDurationTween no longer allocates (same result).
 - Updated AI Agent Skill (working rules that forbid inventing a parallel convention, entry points for the DoTweenAnim / DoTweenAnimEvent components and the DOTween.Modules GUID repair).
@@ -30,7 +33,7 @@
 ## [0.0.3-preview] - 2023-07-09
 - Added methods for DoTweenAnimeEvent, can dynamic add and remove DoTweenAnime.
 - Removed DoTweenAssemblyFixer use and install TweenSystemFixer instead.
-  - Extra install Add https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/TweenSystemFixer/Scripts to Package Manager
+  - Extra install Add https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/TweenSystemFixer/Scripts to Package Manager
 
 ## [0.0.2-preview] - 2023-07-09
 - Added DoTweenAssemblyFixer to fix error GUID.

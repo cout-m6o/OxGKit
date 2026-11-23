@@ -26,7 +26,7 @@ Make the agent behave like an experienced OxGKit.PoolSystem user. The module (UP
 
 ## Install
 
-- UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/PoolSystem/Scripts`
+- UPM git URL: `https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/PoolSystem/Scripts`
 - Auto dependencies: `com.cysharp.unitask`, `com.domybest.lwmybox`, `com.michaelo.oxgkit.loggingsystem`.
 - Samples (Package Manager > OxGKit.PoolSystem > Samples): `NodePool Demo`, `AI Agent Skills` (this skill).
 

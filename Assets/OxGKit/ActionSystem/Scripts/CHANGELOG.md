@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+## [1.0.5] - 2026-11-23
+- Updated the GitHub URLs to the new location of the repositories (https://github.com/cout-m6o): package.json (author, dependencies) and the AI Agent Skill sample (install URL, links).
+
 ## [1.0.4] - 2026-11-23
 - Fixed ParallelAction stopping every remaining action once an action added before them finished (the group never completed), finished actions are now skipped instead.
 - Fixed ParallelDelayAction updating actions before their staggered start (DelayAction.onEndAction fired immediately, and the group could finish early or never).

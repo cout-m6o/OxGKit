@@ -26,7 +26,7 @@ Make the agent behave like an experienced OxGKit.CursorSystem user. The module (
 
 ## Install
 
-- UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/CursorSystem/Scripts`
+- UPM git URL: `https://github.com/cout-m6o/OxGKit.git?path=Assets/OxGKit/CursorSystem/Scripts`
 - No dependencies.
 - Samples (Package Manager > OxGKit.CursorSystem > Samples): `CursorManager Prefab` (pre-wired manager), `CursorManager Demo`, `AI Agent Skills` (this skill).
 
