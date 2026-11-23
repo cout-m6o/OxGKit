@@ -92,6 +92,9 @@ namespace OxGKit.InfiniteScrollView
         // Snapping
         private DateTime _lastSnappingDurationTime;
 
+        // Cached delegate of _OnCellSelected (subscribing with a method group allocates a new delegate every time a cell is shown or recycled)
+        private Action<InfiniteCell> _onCellSelectedHandler;
+
         // Flags
         public bool isInitialized
         {
@@ -521,14 +524,15 @@ namespace OxGKit.InfiniteScrollView
             else
             {
                 Vector2 startPos = this.scrollRect.content.anchoredPosition;
-                this._lastSnappingDurationTime = DateTime.Now;
+                // Only used to measure the elapsed time, so take UTC (no time zone conversion, unaffected by DST or time zone changes)
+                this._lastSnappingDurationTime = DateTime.UtcNow;
                 float t = 0f;
                 while (t < 1f)
                 {
                     if (this.scrollRect == null ||
                         this.scrollRect.IsDestroyed())
                         break;
-                    double currentElapsedTime = DateTime.Now.Subtract(this._lastSnappingDurationTime).TotalSeconds;
+                    double currentElapsedTime = DateTime.UtcNow.Subtract(this._lastSnappingDurationTime).TotalSeconds;
                     t = (float)currentElapsedTime / duration;
                     this.scrollRect.content.anchoredPosition = Vector2.Lerp(startPos, target, t);
                     var normalizedPos = this.scrollRect.normalizedPosition;
@@ -620,7 +624,7 @@ namespace OxGKit.InfiniteScrollView
                 this._cellList[index] = cell;
                 cell.cellData = this._dataList[index];
                 cell.rectTransform.anchoredPosition = pos;
-                cell.onSelected += this._OnCellSelected;
+                cell.onSelected += this._GetOnCellSelectedHandler();
                 cell.gameObject.SetActive(true);
             }
         }
@@ -635,7 +639,7 @@ namespace OxGKit.InfiniteScrollView
             {
                 var cell = this._cellList[index];
                 this._cellList[index] = null;
-                cell.onSelected -= this._OnCellSelected;
+                cell.onSelected -= this._GetOnCellSelectedHandler();
                 cell.gameObject.SetActive(false);
                 cell.OnRecycle();
                 this._cellPool.Enqueue(cell);
@@ -664,6 +668,13 @@ namespace OxGKit.InfiniteScrollView
         private void _OnCellSelected(InfiniteCell selectedCell)
         {
             this.onCellSelected?.Invoke(selectedCell);
+        }
+
+        private Action<InfiniteCell> _GetOnCellSelectedHandler()
+        {
+            if (this._onCellSelectedHandler == null)
+                this._onCellSelectedHandler = this._OnCellSelected;
+            return this._onCellSelectedHandler;
         }
 
         private void _RefreshCellDataIndex(int beginIndex)

@@ -44,5 +44,44 @@ namespace OxGKit.NoticeSystem.Editor
 
             ProjectWindowUtil.CreateScriptAssetFromTemplateFile(finalPath, "NewTplNoticeConditionWithBeforeSceneLoad.cs");
         }
+
+        /// <summary>
+        /// Create the script from the same template directly at the asset path, without the name editing of the Project window (for automation, e.g. Unity CLI)
+        /// </summary>
+        /// <param name="assetPath">e.g. Assets/Scripts/NoticeConditionRegister.cs (the folder must exist, an existing file is never overwritten)</param>
+        /// <returns>The asset path of the created script</returns>
+        public static string CreateScriptTplNoticeConditionRegistersAtPath(string assetPath)
+        {
+            string currentPath = _pathFinder;
+            string finalPath = currentPath.Replace("NoticeSystemCreateScriptEditor.cs", "") + TPL_NOTICE_CONDITION_REGISTERS_SCRIPT_PATH;
+
+            return ScriptTemplateCreator.Create(finalPath, assetPath);
+        }
+
+        /// <summary>
+        /// Create the script from the same template directly at the asset path, without the name editing of the Project window (for automation, e.g. Unity CLI)
+        /// </summary>
+        /// <param name="assetPath">e.g. Assets/Scripts/NewMailCond.cs (the folder must exist, an existing file is never overwritten)</param>
+        /// <returns>The asset path of the created script</returns>
+        public static string CreateScriptTplNoticeConditionAtPath(string assetPath)
+        {
+            string currentPath = _pathFinder;
+            string finalPath = currentPath.Replace("NoticeSystemCreateScriptEditor.cs", "") + TPL_NOTICE_CONDITION_SCRIPT_PATH;
+
+            return ScriptTemplateCreator.Create(finalPath, assetPath);
+        }
+
+        /// <summary>
+        /// Create the script from the same template directly at the asset path, without the name editing of the Project window (for automation, e.g. Unity CLI)
+        /// </summary>
+        /// <param name="assetPath">e.g. Assets/Scripts/NewMailCond.cs (the folder must exist, an existing file is never overwritten)</param>
+        /// <returns>The asset path of the created script</returns>
+        public static string CreateScriptTplNoticeConditionWithBeforeSceneLoadAtPath(string assetPath)
+        {
+            string currentPath = _pathFinder;
+            string finalPath = currentPath.Replace("NoticeSystemCreateScriptEditor.cs", "") + TPL_NOTICE_CONDITION_WITH_BEFORE_SCENE_LOAD_SCRIPT_PATH;
+
+            return ScriptTemplateCreator.Create(finalPath, assetPath);
+        }
     }
 }

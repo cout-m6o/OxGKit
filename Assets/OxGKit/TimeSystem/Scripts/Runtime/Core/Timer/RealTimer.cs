@@ -20,17 +20,14 @@ namespace OxGKit.TimeSystem
 
         public RealTimer()
         {
-            this._createTime = DateTime.Now;
+            // 僅用於計算經過時間，因此取 UTC 時間（無需時區換算，也不受日光節約或時區切換影響）
+            this._createTime = DateTime.UtcNow;
             this.Reset();
         }
 
         public RealTimer(bool autoPlay) : this()
         {
             if (autoPlay) this.Play();
-        }
-
-        ~RealTimer()
-        {
         }
 
         public void Reset()
@@ -48,7 +45,7 @@ namespace OxGKit.TimeSystem
 
         public float GetRealTime()
         {
-            var timeSpan = DateTime.Now.Subtract(this._createTime);
+            var timeSpan = DateTime.UtcNow.Subtract(this._createTime);
             return (float)timeSpan.TotalSeconds;
         }
 

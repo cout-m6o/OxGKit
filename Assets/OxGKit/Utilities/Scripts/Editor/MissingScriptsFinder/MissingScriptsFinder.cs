@@ -92,7 +92,8 @@ namespace OxGKit.Utilities.MissingFinder.Editor
             {
                 EditorUtility.DisplayProgressBar("Check missing script prefabs", path, (float)index / count);
                 var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-                if (!FindMissingScriptsInGo(prefab, false))
+                // 不是已匯入資產的 prefab 檔案（例如位於「~」結尾或「.」開頭的隱藏資料夾內）無法載入，直接略過。
+                if (prefab == null || !FindMissingScriptsInGo(prefab, false))
                     notMissingCount++;
             });
             Debug.Log("Missing script prefabs count: " + (missingScriptPrefabs.Count - notMissingCount));

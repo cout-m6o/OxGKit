@@ -72,12 +72,9 @@ namespace OxGKit.NoticeSystem
 
             for (int i = 0; i < noticeInfos.Length; i++)
             {
+                // The indexer adds the id when it is new and overwrites it when it exists (single lookup)
                 int id = noticeInfos[i].conditionId;
-                if (this.HasCondition(id))
-                {
-                    this._dictNoticeInfos[id] = noticeInfos[i];
-                }
-                else this._dictNoticeInfos.Add(id, noticeInfos[i]);
+                this._dictNoticeInfos[id] = noticeInfos[i];
             }
 
             foreach (var noticeInfo in this._dictNoticeInfos.Values)
@@ -96,6 +93,9 @@ namespace OxGKit.NoticeSystem
         /// <param name="conditionIds"></param>
         public void DeregisterNotice(params int[] conditionIds)
         {
+            // 自身的 OnDestroy 已完成註銷並釋放緩存之後（例如場景卸載或結束 Play 模式時，其他腳本的 OnDestroy 才調用註銷），不需要再處理。
+            if (this._dictNoticeInfos == null) return;
+
             if (conditionIds == null || conditionIds.Length == 0)
             {
                 // Deregister by self conditions
@@ -120,6 +120,9 @@ namespace OxGKit.NoticeSystem
                 }
             }
 
+            // 物件已被銷毀時（未曾啟用過的物件不會收到 OnDestroy，會在銷毀之後才被其他腳本調用註銷），只需要完成註銷，無法也不需要再刷新顯示。
+            if (this == null) return;
+
             this.CheckConditionAndVisible();
         }
 
@@ -139,7 +142,9 @@ namespace OxGKit.NoticeSystem
                     if (!this.gameObject.activeSelf)
                     {
                         this.gameObject.SetActive(true);
-                        Logging.PrintInfo<Logger>($"[{nameof(NoticeSystem)}] (Match Condition) Notify Notice Item {this.name}");
+                        // Build the message (this.name allocates) only when the logger will actually print it
+                        if (Logging.IsLogActive<Logger>(LogLevel.LogInfo))
+                            Logging.PrintInfo<Logger>($"[{nameof(NoticeSystem)}] (Match Condition) Notify Notice Item {this.name}");
                     }
                     return;
                 }

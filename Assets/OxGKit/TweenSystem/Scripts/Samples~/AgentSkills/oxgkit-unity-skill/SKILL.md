@@ -15,15 +15,35 @@ Make the agent behave like an experienced OxGKit.TweenSystem user. The module (U
 2. Start with the conclusion, then implementation details.
 3. Verify APIs against the installed package (`Library/PackageCache/com.michaelo.oxgkit.tweensystem@*` or `Assets/OxGKit/TweenSystem/Scripts` when embedded) and check the DOTween setup state before diagnosing compile errors.
 4. Prefer inspector-authored `DoTweenAnim` tracks for reusable prefab animation; write raw DOTween code only when code-driven animation is genuinely simpler.
+5. Obey the "Working rules" below: work the way the module ships and go through its Editor entry points.
+
+## Working rules (non-negotiable)
+
+- **The package is the only authority.** How this module is used is defined by the installed package — its source, its samples and its Editor tooling. Follow that usage exactly. Never design your own variant of it: no home-made tween component, animation-track data format, DOTween wrapper layer or sequence player that merely "fits" the module.
+- **Trigger, don't imitate.** Whatever the module's Editor tooling or shipped assets can provide (see "Editor entry points") is obtained through that entry point — the same one a developer uses — and you continue from what it produced. Do not hand-build an equivalent from memory and do not re-implement an Editor tool.
+- **Stay inside the shipped shape.** Configure what the module exposes (serialized fields, public API); do not patch the package, subclass around it or add a parallel mechanism next to it.
+- **No gap-filling.** If the module does not cover a need, say so and ask the developer. Do not close the gap with a rule of your own.
 
 ## Install
 
 - UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/TweenSystem/Scripts`
 - Auto dependencies: `com.domybest.lwmybox`, `com.michaelo.oxgkit.timesystem`.
 - Manual dependency: **DOTween Pro** (paid asset) must be imported, and DOTween assemblies created via `Tools > Demigiant > DOTween Utility Panel > Create ASMDEF`.
-- GUID note: `OxGKit.TweenSystem` references `DOTween.Modules` by a fixed GUID (`fdf3e181e62e9d243a7fee5ce890ab71`). If the assembly reference breaks (DOTween regenerated its asmdef with a new GUID), fix it by editing `DOTween/Modules/DOTween.Modules.asmdef.meta` to that GUID, or install `OxGKit.TweenSystemFixer` and run its menu tool.
+- GUID note: `OxGKit.TweenSystem` references `DOTween.Modules` by a fixed GUID (`fdf3e181e62e9d243a7fee5ce890ab71`). If the assembly reference breaks (DOTween regenerated its asmdef with a new GUID), repair it with `OxGKit.TweenSystemFixer` (menu, Editor method or Unity CLI command — see "Editor entry points"); editing `DOTween/Modules/DOTween.Modules.asmdef.meta` by hand is the fallback when the fixer cannot be installed.
 - Samples (Package Manager > OxGKit.TweenSystem > Samples): `TweenSystem Demo`, `AI Agent Skills` (this skill).
-- Components: `Add Component > OxGKit > TweenSystem > DoTweenAnim` / `DoTweenAnimEvent`.
+
+## Editor entry points (trigger, don't hand-write)
+
+This module ships no generator: animations are the `DoTweenAnim` / `DoTweenAnimEvent` components, added the way a developer adds them and authored through their serialized tracks.
+
+| You need | What a developer does | Agent equivalent |
+| --- | --- | --- |
+| Tween tracks on a GameObject | `Add Component > OxGKit > TweenSystem > DoTweenAnim` | `unity command component add --target <GameObject> --type OxGKit.TweenSystem.DoTweenAnim` (Unity CLI) · menu item `Component/OxGKit/TweenSystem/DoTweenAnim` on the selected GameObject · `Undo.AddComponent<OxGKit.TweenSystem.DoTweenAnim>(gameObject)` (editor code) |
+| A player for a group of `DoTweenAnim` | `Add Component > OxGKit > TweenSystem > DoTweenAnimEvent` | `unity command component add --target <GameObject> --type OxGKit.TweenSystem.DoTweenAnimEvent` (Unity CLI) · menu item `Component/OxGKit/TweenSystem/DoTweenAnimEvent` on the selected GameObject · `Undo.AddComponent<OxGKit.TweenSystem.DoTweenAnimEvent>(gameObject)` (editor code) |
+| The `DOTween.Modules` GUID that this package references | install `OxGKit.TweenSystemFixer`, select the DOTween folder, `Assets > OxGKit TweenSystem GUID Fixer > Search And Reassign DOTween.Modules GUID` | `unity command oxgkit.tween repair_dotween_modules_guid --dry-run` / `--confirm` (Unity CLI) or `OxGKit.TweenSystemFixer.Editor.DoTweenAssemblyFixer.RepairDoTweenModulesGUIDInProject()` (editor code) — both from `OxGKit.TweenSystemFixer` v1.0.3+ |
+| A working reference scene | Package Manager > OxGKit.TweenSystem > Samples > `TweenSystem Demo` > Import | read it before authoring tracks |
+
+The `unity command ...` forms need Unity 6+, the Unity Pipeline package (`com.unity.pipeline` 1.x — `unity pipeline install`) and the project open in a running Editor; `component add` is one of that package's own commands. The tracks are serialized fields of `DoTweenAnim` (see below): author them in the Inspector (it has an edit-mode preview), with `unity command component set_properties` or with `SerializedObject` in editor code — not with a runtime script that rebuilds the animation.
 
 ## DoTweenAnim (per-object tween tracks)
 

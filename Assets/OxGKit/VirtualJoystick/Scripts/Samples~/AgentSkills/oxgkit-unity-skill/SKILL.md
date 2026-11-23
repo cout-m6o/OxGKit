@@ -15,12 +15,44 @@ Make the agent behave like an experienced OxGKit.VirtualJoystick user. The modul
 2. Start with the conclusion, then implementation details.
 3. Verify APIs against the installed package (`Library/PackageCache/com.michaelo.oxgkit.virtualjoystick@*` or `Assets/OxGKit/VirtualJoystick/Scripts` when embedded). Do not invent APIs.
 4. Confirm the Canvas setup (render mode, scaler) and EventSystem exist before debugging "joystick not responding".
+5. Obey the "Working rules" below: work the way the module ships and go through its Editor entry points.
+
+## Working rules (non-negotiable)
+
+- **The package is the only authority.** How this module is used is defined by the installed package — its source, its samples and its Editor tooling. Follow that usage exactly. Never design your own variant of it: no home-made on-screen stick, drag handler, input wrapper or dead-zone/normalisation layer that merely "fits" the module.
+- **Trigger, don't imitate.** Whatever the module's Editor tooling or shipped assets can provide (see "Editor entry points") is obtained through that entry point — the same one a developer uses — and you continue from what it produced. Do not hand-build an equivalent from memory and do not re-implement an Editor tool.
+- **Stay inside the shipped shape.** Configure what the module exposes (serialized fields, public API); do not patch the package, subclass around it or add a parallel mechanism next to it.
+- **No gap-filling.** If the module does not cover a need, say so and ask the developer. Do not close the gap with a rule of your own.
 
 ## Install
 
 - UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/VirtualJoystick/Scripts`
 - No dependencies (works with both input backends; it is UGUI-event driven).
 - Samples (Package Manager > OxGKit.VirtualJoystick > Samples): `VirtualJoystickUI Prefab` (pre-wired stick with images), `VirtualJoystick Demo`, `AI Agent Skills` (this skill).
+
+## Editor entry points (trigger, don't hand-write)
+
+This module ships no generator: a joystick is the `VirtualJoystick` component, normally taken from the shipped prefab.
+
+| You need | What a developer does | Agent equivalent |
+| --- | --- | --- |
+| A ready-made on-screen stick (touch area, background and handle already wired) | Package Manager > OxGKit.VirtualJoystick > Samples > `VirtualJoystickUI Prefab` > Import, then drag `VirtualJoystickUI.prefab` under a Canvas | import the sample (see below), then instantiate the prefab under the Canvas — `unity command prefab instantiate` (Unity CLI) or `PrefabUtility.InstantiatePrefab` (editor code) |
+| The component on your own touch area | `Add Component > OxGKit > VirtualJoystick > VirtualJoystick` | `unity command component add --target <GameObject> --type OxGKit.VirtualJoystick.VirtualJoystick` (Unity CLI) · menu item `Component/OxGKit/VirtualJoystick/VirtualJoystick` on the selected GameObject · `Undo.AddComponent<OxGKit.VirtualJoystick.VirtualJoystick>(gameObject)` (editor code) |
+| A working reference scene | Package Manager > OxGKit.VirtualJoystick > Samples > `VirtualJoystick Demo` > Import | read it before wiring input |
+
+Importing the `VirtualJoystickUI Prefab` sample (same as the Import button of Package Manager > OxGKit.VirtualJoystick > Samples; Unity copies it to `Assets/Samples/OxGKit.VirtualJoystick/<version>/VirtualJoystickUI Prefab`):
+
+```csharp
+// Editor code
+var package = UnityEditor.PackageManager.PackageInfo.FindForAssetPath("Packages/com.michaelo.oxgkit.virtualjoystick");
+foreach (var sample in UnityEditor.PackageManager.UI.Sample.FindByPackage(package.name, package.version))
+    if (sample.displayName == "VirtualJoystickUI Prefab" && !sample.isImported)
+        sample.Import(UnityEditor.PackageManager.UI.Sample.ImportOptions.None);
+```
+
+Without Editor access, copy the package's `Samples~/VirtualJoystickUI` folder (with its `.meta` files) to that destination instead. Prefer this prefab over wiring the references by hand.
+
+The `unity command ...` forms need Unity 6+, the Unity Pipeline package (`com.unity.pipeline` 1.x — `unity pipeline install`) and the project open in a running Editor; `component add` is one of that package's own commands. Adding the component also adds the `Image` it requires (the touch surface).
 
 ## Component setup
 

@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 
 namespace OxGKit.ActionSystem
 {
@@ -7,6 +8,11 @@ namespace OxGKit.ActionSystem
     {
         protected QueueSet<ActionBase> _queueRunningActions = new QueueSet<ActionBase>();
         protected float _delayTime = 0f;
+
+        /// <summary>
+        /// Actions still waiting for their staggered start (must not be updated before RunStart)
+        /// </summary>
+        private HashSet<ActionBase> _pendingStartActions;
 
         #region Default Constructor
         public ParallelDelayAction()
@@ -72,8 +78,20 @@ namespace OxGKit.ActionSystem
 
         protected async void StartParallelActions()
         {
-            foreach (var action in this._queueRunningActions.ToArray())
+            var actions = this._queueRunningActions.ToArray();
+
+            // With a delay the actions start one after another across frames,
+            // so mark them as pending first (the update loop leaves them alone until they have started)
+            HashSet<ActionBase> pendingStartActions = null;
+            if (this._delayTime > 0f && actions.Length > 0)
             {
+                pendingStartActions = new HashSet<ActionBase>(actions);
+                this._pendingStartActions = pendingStartActions;
+            }
+
+            foreach (var action in actions)
+            {
+                pendingStartActions?.Remove(action);
                 action.RunStart();
                 if (this._delayTime > 0f) await UniTask.Delay(TimeSpan.FromSeconds(this._delayTime));
             }
@@ -83,7 +101,16 @@ namespace OxGKit.ActionSystem
         {
             foreach (var action in this._queueRunningActions.ToArray())
             {
-                if (action.IsAllDone()) return;
+                // Skip the action that is already done and keep updating the others
+                // (returning here stopped every action behind the first finished one)
+                if (action.IsAllDone()) continue;
+
+                // Not started yet, updating it now would finish it immediately (its duration is only set on start)
+                if (this._pendingStartActions != null &&
+                    this._pendingStartActions.Count > 0 &&
+                    this._pendingStartActions.Contains(action))
+                    continue;
+
                 action.RunUpdate(dt);
             }
         }

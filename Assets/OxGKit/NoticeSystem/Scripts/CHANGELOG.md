@@ -1,5 +1,13 @@
 ## CHANGELOG
 
+## [1.0.6] - 2026-11-23
+- Optimized NoticeManager/NoticeItem/ListSet lookups (single dictionary/set lookup instead of Contains + indexer).
+- Optimized notice logs to build their messages only when the logger will print them (uses Logging.IsLogActive, requires OxGKit.LoggingSystem 1.4.4+).
+- Fixed NoticeItem.DeregisterNotice throwing (NullReferenceException or MissingReferenceException) when it is called for a notice item that is already destroyed, e.g. from another script's OnDestroy while a scene unloads or play mode stops (the NoticeDemo sample does this).
+- Added NoticeSystemCreateScriptEditor.CreateScriptTplNoticeConditionAtPath(assetPath), CreateScriptTplNoticeConditionWithBeforeSceneLoadAtPath(assetPath) and CreateScriptTplNoticeConditionRegistersAtPath(assetPath) to create the scripts from the templates directly at a path, without the name editing of the Project window (same content as the create menus).
+- Added Unity CLI support: unity command oxgkit.notice create_condition / create_condition_before_scene_load / create_condition_registers (optional assembly OxGKit.NoticeSystem.Editor.UnityCli, compiled only when the Unity Pipeline package com.unity.pipeline 1.x is installed).
+- Updated AI Agent Skill (working rules that forbid inventing a parallel convention, Editor entry points with the Unity CLI / editor code / menu / template-file routes, condition and register examples follow the generated templates).
+
 ## [1.0.5] - 2026-07-30
 - Added AI Agent Skills sample (Samples~/AgentSkills/oxgkit-unity-skill).
 - Optimized samples descriptions in package.json.

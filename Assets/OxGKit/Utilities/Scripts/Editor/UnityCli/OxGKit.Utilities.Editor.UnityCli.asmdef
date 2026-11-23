@@ -1,0 +1,29 @@
+{
+    "name": "OxGKit.Utilities.Editor.UnityCli",
+    "rootNamespace": "",
+    "references": [
+        "OxGKit.Utilities.Editor",
+        "Unity.Pipeline.Attributes",
+        "Unity.Pipeline",
+        "Unity.Pipeline.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "OXGKIT_UNITY_PIPELINE"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.pipeline",
+            "expression": "[1.0.0,2.0.0)",
+            "define": "OXGKIT_UNITY_PIPELINE"
+        }
+    ],
+    "noEngineReferences": false
+}

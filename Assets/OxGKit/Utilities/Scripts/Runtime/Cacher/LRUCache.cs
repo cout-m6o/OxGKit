@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +7,10 @@ namespace OxGKit.Utilities.Cacher
     public class LRUCache<TKey, TValue>
     {
         private readonly int _capacity;
-        private readonly ConcurrentDictionary<TKey, LinkedListNode<CacheItem>> _cache;
+
+        // 所有存取皆在 _syncRoot 鎖內進行，因此使用一般 Dictionary 即可
+        // （ConcurrentDictionary 的 Count 與 Keys 需取得其全部內部鎖，緩存滿載時每次新增都會付出這筆成本）
+        private readonly Dictionary<TKey, LinkedListNode<CacheItem>> _cache;
         private readonly LinkedList<CacheItem> _lruList;
         private readonly object _syncRoot = new object();
 
@@ -34,7 +36,7 @@ namespace OxGKit.Utilities.Cacher
                 throw new ArgumentException("Capacity must be greater than zero.");
 
             this._capacity = capacity;
-            this._cache = new ConcurrentDictionary<TKey, LinkedListNode<CacheItem>>();
+            this._cache = new Dictionary<TKey, LinkedListNode<CacheItem>>();
             this._lruList = new LinkedList<CacheItem>();
             this._removeCacheHandler = new UnityObjectRemoveCacheHandler<TKey, TValue>();
         }
@@ -93,18 +95,29 @@ namespace OxGKit.Utilities.Cacher
                 }
                 else
                 {
+                    LinkedListNode<CacheItem> newNode = null;
+
                     // 緩存滿時淘汰最久未使用的項目
                     if (this._cache.Count >= this._capacity)
                     {
-                        this.RemoveLRUItem();
+                        // 被淘汰的節點已自列表移除，可直接重複使用（滿載後新增不再配置新的節點與項目）
+                        newNode = this._RemoveLRUNode();
                     }
 
-                    var cacheItem = new CacheItem(key, value);
-                    var newNode = new LinkedListNode<CacheItem>(cacheItem);
+                    if (newNode != null && newNode.List == null)
+                    {
+                        newNode.Value.Key = key;
+                        newNode.Value.Value = value;
+                    }
+                    else
+                    {
+                        var cacheItem = new CacheItem(key, value);
+                        newNode = new LinkedListNode<CacheItem>(cacheItem);
+                    }
 
                     // 將新節點加到最前面
                     this._lruList.AddFirst(newNode);
-                    this._cache.TryAdd(key, newNode);
+                    this._cache[key] = newNode;
                 }
             }
         }
@@ -113,8 +126,9 @@ namespace OxGKit.Utilities.Cacher
         {
             lock (this._syncRoot)
             {
-                if (this._cache.TryRemove(key, out var node))
+                if (this._cache.TryGetValue(key, out var node))
                 {
+                    this._cache.Remove(key);
                     // For remove handler
                     var item = node.Value.Value;
                     this._removeCacheHandler?.RemoveCache(key, item);
@@ -145,23 +159,33 @@ namespace OxGKit.Utilities.Cacher
         {
             lock (this._syncRoot)
             {
-                var lastNode = this._lruList.Last;
-                if (lastNode != null)
-                {
-                    // For remove handler
-                    var key = lastNode.Value.Key;
-                    var item = lastNode.Value.Value;
-                    this._removeCacheHandler?.RemoveCache(key, item);
-                    lastNode.Value.Value = default;
-                    this._cache.TryRemove(key, out _);
-                    this._lruList.RemoveLast();
-                }
+                this._RemoveLRUNode();
             }
+        }
+
+        /// <summary>
+        /// 淘汰最久未使用的項目，並返回已自列表移除的節點（列表為空時返回 null）
+        /// </summary>
+        /// <returns></returns>
+        private LinkedListNode<CacheItem> _RemoveLRUNode()
+        {
+            var lastNode = this._lruList.Last;
+            if (lastNode != null)
+            {
+                // For remove handler
+                var key = lastNode.Value.Key;
+                var item = lastNode.Value.Value;
+                this._removeCacheHandler?.RemoveCache(key, item);
+                lastNode.Value.Value = default;
+                this._cache.Remove(key);
+                this._lruList.RemoveLast();
+            }
+            return lastNode;
         }
 
         private class CacheItem
         {
-            public TKey Key { get; }
+            public TKey Key { get; set; }
             public TValue Value { get; set; }
 
             public CacheItem(TKey key, TValue value)

@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+## [1.0.3] - 2026-11-23
+- Fixed the Localization Demo sample showing the text keys (Str1, Str2, Str3) on start when the last or system language is the first option (English); the texts are refreshed once after the options are built.
+- Updated AI Agent Skill (working rules that forbid inventing a parallel convention, entry point: the Localization Demo sample).
+
 ## [1.0.2] - 2026-07-30
 - Added AI Agent Skills sample (Samples~/AgentSkills/oxgkit-unity-skill).
 - Optimized samples descriptions in package.json.

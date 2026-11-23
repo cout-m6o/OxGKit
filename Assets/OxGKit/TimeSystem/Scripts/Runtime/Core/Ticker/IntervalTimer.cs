@@ -29,11 +29,16 @@ namespace OxGKit.TimeSystem
                 {
                     await UniTask.Delay(milliseconds, ignoreTimeScale, PlayerLoopTiming.Update, (cts == null) ? default : cts.Token);
                     action?.Invoke();
-                } while (this._isRunning);
+                    // Keep looping only while this loop still owns the current run
+                    // (StopInterval + SetInterval starts a new loop with a new cts, the previous loop must end here)
+                } while (this._isRunning && ReferenceEquals(this._cts, cts));
             }
             catch (Exception ex)
             {
-                this.StopInterval();
+                // A cancelled loop arrives here one tick after StopInterval, if SetInterval was called again
+                // in between, this loop must not stop the run that was just started
+                if (ReferenceEquals(this._cts, cts))
+                    this.StopInterval();
                 throw ex;
             }
         }

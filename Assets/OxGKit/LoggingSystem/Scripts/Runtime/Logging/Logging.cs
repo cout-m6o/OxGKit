@@ -249,6 +249,22 @@ namespace OxGKit.LoggingSystem
         }
 
         #region Global Methods
+        /// <summary>
+        /// 檢查指定日誌器在該級別是否會實際輸出
+        /// <para> 可在組合日誌訊息前先行判斷，避免日誌不會輸出時仍產生訊息字串（降低 GC）。 </para>
+        /// </summary>
+        /// <typeparam name="TLogging"></typeparam>
+        /// <param name="logLevel"></param>
+        /// <returns></returns>
+        public static bool IsLogActive<TLogging>(LogLevel logLevel) where TLogging : Logging
+        {
+            if (!CheckHasAnyLoggers())
+                return false;
+
+            return _cacheLoggers.TryGetValue(LoggerNameCache<TLogging>.loggerName, out var logger) &&
+                   logger.CheckLogActive(logLevel);
+        }
+
         public static void Print<TLogging>(object message, UnityEngine.Object context = null) where TLogging : Logging
         {
             DispatchLog<TLogging>(LogLevel.LogDebug, message, context);
@@ -302,27 +318,32 @@ namespace OxGKit.LoggingSystem
                 logMainLevel == LogLevel.Off)
                 return false;
 
+            // 日誌器未激活時，以下判斷皆不會成立，因此提前返回
+            if (!this.logActive)
+                return false;
+
             // 如果全域級別允許該級別，則允許記錄
             // 但是需要考慮全域級別的限制，不能打印高於全域級別的日誌
-            if (logMainLevel.HasFlag(logLevel))
+            // （以位元運算取代 Enum.HasFlag，判斷結果相同，且在任何腳本後端皆不會裝箱）
+            if ((logMainLevel & logLevel) == logLevel)
             {
                 switch (logMainLevel)
                 {
                     // 全域優先
                     case LogLevel.LogDebug:
-                        return this.logActive && this.logLevel.HasFlag(LogLevel.LogDebug);
+                        return (this.logLevel & LogLevel.LogDebug) == LogLevel.LogDebug;
                     case LogLevel.LogInfo:
-                        return this.logActive && this.logLevel.HasFlag(LogLevel.LogInfo);
+                        return (this.logLevel & LogLevel.LogInfo) == LogLevel.LogInfo;
                     case LogLevel.LogWarning:
-                        return this.logActive && this.logLevel.HasFlag(LogLevel.LogWarning);
+                        return (this.logLevel & LogLevel.LogWarning) == LogLevel.LogWarning;
                     case LogLevel.LogError:
-                        return this.logActive && this.logLevel.HasFlag(LogLevel.LogError);
+                        return (this.logLevel & LogLevel.LogError) == LogLevel.LogError;
                     case LogLevel.LogException:
-                        return this.logActive && this.logLevel.HasFlag(LogLevel.LogException);
+                        return (this.logLevel & LogLevel.LogException) == LogLevel.LogException;
 
                     // 檢查個別級別
                     default:
-                        return this.logActive && this.logLevel.HasFlag(logLevel);
+                        return (this.logLevel & logLevel) == logLevel;
                 }
             }
 

@@ -124,6 +124,9 @@ public class LocalizationDemo : MonoBehaviour
     {
         this._DrawLanguageOptionsView();
         this._RefreshLastLanguageOptions();
+        // The dropdown raises its event only when its value changes. When the last language is the first option
+        // (e.g. English) nothing has refreshed the texts yet, so refresh them once for the current language
+        this._RefreshLanguage(GameSettings.Language.gameLanguage);
     }
 
     /// <summary>

@@ -1,5 +1,12 @@
 ## CHANGELOG
 
+## [1.0.5] - 2026-11-23
+- Fixed Inputs.CM.IsActive always returning true (SetActive modified a copy of the ControlMap struct).
+- Optimized control map / input action lookups (TryGetValue) and added double-checked locking for the InputCenter instance.
+- Added InputSystemCreateScriptEditor.CreateScriptTplInputActionAtPath(assetPath) and CreateScriptTplInputBindingCompositeAtPath(assetPath) to create the scripts from the templates directly at a path, without the name editing of the Project window (same content as the create menus).
+- Added Unity CLI support: unity command oxgkit.input create_action / create_binding_composite (optional assembly OxGKit.InputSystem.Editor.UnityCli, compiled only when the Unity Pipeline package com.unity.pipeline 1.x is installed).
+- Updated AI Agent Skill (working rules that forbid inventing a parallel convention, Editor entry points with the Unity CLI / editor code / menu / template-file routes, corrected the Binding Composite template description).
+
 ## [1.0.4] - 2026-07-30
 - Added AI Agent Skills sample (Samples~/AgentSkills/oxgkit-unity-skill).
 - Optimized samples descriptions in package.json.

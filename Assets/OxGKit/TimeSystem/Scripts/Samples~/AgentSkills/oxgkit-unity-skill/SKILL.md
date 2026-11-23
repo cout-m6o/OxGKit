@@ -15,6 +15,14 @@ Make the agent behave like an experienced OxGKit.TimeSystem user. The module (UP
 2. Start with the conclusion, then implementation details.
 3. Verify APIs against the installed package (`Library/PackageCache/com.michaelo.oxgkit.timesystem@*` or `Assets/OxGKit/TimeSystem/Scripts` when embedded). Do not invent APIs.
 4. When choosing a timer/updater, state whether the use case must ignore `Time.timeScale` (real time) or follow it (game time) — that decides Real* vs Delta*/DT*.
+5. Obey the "Working rules" below: work the way the module ships and go through its Editor entry points.
+
+## Working rules (non-negotiable)
+
+- **The package is the only authority.** How this module is used is defined by the installed package — its source, its samples and its Editor tooling. Follow that usage exactly. Never design your own variant of it: no home-made timer class, coroutine-based interval helper, update-loop manager or server-clock wrapper that merely "fits" the module.
+- **Trigger, don't imitate.** Whatever the module's Editor tooling or shipped assets can provide (see "Editor entry points") is obtained through that entry point — the same one a developer uses — and you continue from what it produced. Do not hand-build an equivalent from memory and do not re-implement an Editor tool.
+- **Stay inside the shipped shape.** Configure what the module exposes (serialized fields, public API); do not patch the package, subclass around it or add a parallel mechanism next to it.
+- **No gap-filling.** If the module does not cover a need, say so and ask the developer. Do not close the gap with a rule of your own.
 
 ## Install
 
@@ -22,11 +30,31 @@ Make the agent behave like an experienced OxGKit.TimeSystem user. The module (UP
 - Auto dependencies: `com.cysharp.unitask`, `com.michaelo.oxgkit.loggingsystem`.
 - Samples (Package Manager > OxGKit.TimeSystem > Samples): `Timer Demo`, `AI Agent Skills` (this skill).
 
+## Editor entry points (trigger, don't hand-write)
+
+This module ships no Editor tooling and no generator — its whole surface is the runtime API below. The entry point for an agent is the shipped sample:
+
+| You need | What a developer does | Agent equivalent |
+| --- | --- | --- |
+| The reference usage of every timer/updater | Package Manager > OxGKit.TimeSystem > Samples > `Timer Demo` > Import | import the sample (see below) and read it before choosing a timer |
+
+Importing the `Timer Demo` sample (same as the Import button of Package Manager > OxGKit.TimeSystem > Samples; Unity copies it to `Assets/Samples/OxGKit.TimeSystem/<version>/Timer Demo`):
+
+```csharp
+// Editor code
+var package = UnityEditor.PackageManager.PackageInfo.FindForAssetPath("Packages/com.michaelo.oxgkit.timesystem");
+foreach (var sample in UnityEditor.PackageManager.UI.Sample.FindByPackage(package.name, package.version))
+    if (sample.displayName == "Timer Demo" && !sample.isImported)
+        sample.Import(UnityEditor.PackageManager.UI.Sample.ImportOptions.None);
+```
+
+Without Editor access, copy the package's `Samples~/TimerDemo` folder (with its `.meta` files) to that destination instead. It is reference material, not a framework layer to copy into the project.
+
 ## Module map (pick the right tool)
 
 | Type | Time base | Driven by | Use for |
 | --- | --- | --- | --- |
-| `RealTimer` | real clock (needs `RealTime.InitStartupTime()`) | self (query-based) | cooldowns/countdowns that must ignore pause & timeScale |
+| `RealTimer` | real clock, measured from the timer's own creation | self (query-based) | cooldowns/countdowns that must ignore pause & timeScale |
 | `DeltaTimer` | accumulated dt you feed | owner calls `UpdateTimer(dt)` | game-time cooldowns that pause with your feature |
 | `RTUpdater` | real clock (UniTask loop) | `Start()` / `StartOnThread()` | update loops independent of Unity timeScale (e.g. network heartbeat) |
 | `DTUpdater` | Unity-scaled time (UniTask loop) | `Start()` | update loops that respect `Time.timeScale` |
@@ -38,8 +66,8 @@ Make the agent behave like an experienced OxGKit.TimeSystem user. The module (UP
 ```csharp
 using OxGKit.TimeSystem;
 
-// --- RealTime (call once at boot, required by RealTimer) ---
-RealTime.InitStartupTime();
+// --- RealTime (optional: records the app's startup time for your own use; no timer depends on it) ---
+RealTime.InitStartupTime();           // call once at boot if you read timeSinceStartup
 bool inited = RealTime.IsInitStartupTime();
 System.DateTime startup = RealTime.timeSinceStartup;
 
@@ -107,8 +135,7 @@ double off   = NtpTime.GetUtcOffset();
 Cooldown that survives pause menus (real time):
 
 ```csharp
-RealTime.InitStartupTime();            // once at boot (main MonoBehaviour Awake)
-var cd = new RealTimer(true);
+var cd = new RealTimer(true);          // autoPlay; counts real time from now
 cd.SetTimer(10f);
 if (cd.IsTimerTimeout()) { /* skill ready */ }
 ```
@@ -137,7 +164,9 @@ rt.Stop();
 
 ## Rules & pitfalls
 
-- Call `RealTime.InitStartupTime()` once at app start **before** using `RealTimer`; all real-time values are measured from it.
+- `RealTimer` needs no initialisation: it measures real time from its own creation. `RealTime.InitStartupTime()` only records the app's startup time in `RealTime.timeSinceStartup` — call it once at boot when you read that value.
+- Use v1.1.4+: in earlier versions an `IntervalTimer` / `DTUpdater` / `RTUpdater` that was stopped and started again in the same frame stayed stopped.
+- Use the shipped timers and updaters for timing; do not add a coroutine-based timer or a second update-loop manager for the same job.
 - `IsTickTimeout()` re-arms the tick automatically — call it exactly once per frame per consumer, or ticks will be consumed by the wrong caller.
 - `DeltaTimer`/`DTUpdater` freeze when their owner stops feeding/`Time.timeScale` is 0; `RealTimer`/`RTUpdater` do not — pick deliberately.
 - Always `Stop()` updaters and `TryClearInterval` interval timers when the owning feature/scene exits; they are UniTask loops and keep running otherwise.

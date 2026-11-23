@@ -71,7 +71,8 @@
         {
             foreach (var action in this._queueRunningActions.ToArray())
             {
-                if (action.IsAllDone()) return;
+                // Skip the action that is already done and keep starting the others
+                if (action.IsAllDone()) continue;
                 action.RunStart();
             }
         }
@@ -80,7 +81,9 @@
         {
             foreach (var action in this._queueRunningActions.ToArray())
             {
-                if (action.IsAllDone()) return;
+                // Skip the action that is already done and keep updating the others
+                // (returning here stopped every action behind the first finished one)
+                if (action.IsAllDone()) continue;
                 action.RunUpdate(dt);
             }
         }

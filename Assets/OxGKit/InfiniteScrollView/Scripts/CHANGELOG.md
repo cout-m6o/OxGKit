@@ -1,5 +1,13 @@
 ## CHANGELOG
 
+## [1.7.2] - 2026-11-23
+- Optimized the cell selection subscription with a cached delegate (no allocation each time a cell is shown or recycled).
+- Modified snapping to measure elapsed time with DateTime.UtcNow (no time zone conversion, unaffected by DST or time zone changes).
+- Fixed the "Template Infinite Cell (RectTransform Prefab)" create menu throwing an exception when nothing is selected (Unity now decides the location, like the script templates) and building a backslash path when a file is selected.
+- Added InfiniteScrollViewCreateScriptEditor.CreateScriptTplInfiniteCellAtPath(assetPath) and InfiniteScrollViewCreatePrefabEditor.CreateTplRectTransformCPAtPath(assetPath) to create the cell script / cell prefab directly at a path, without the name editing of the Project window (same result as the create menus).
+- Added Unity CLI support: unity command oxgkit.infinite_scroll_view create_cell / create_cell_prefab (optional assembly OxGKit.InfiniteScrollView.Editor.UnityCli, compiled only when the Unity Pipeline package com.unity.pipeline 1.x is installed).
+- Updated AI Agent Skill (working rules that forbid inventing a parallel convention, Editor entry points with the Unity CLI / editor code / menu / template-file routes, cell examples follow the generated template).
+
 ## [1.7.1] - 2026-07-30
 - Added AI Agent Skills sample (Samples~/AgentSkills/oxgkit-unity-skill).
 - Optimized samples descriptions in package.json.

@@ -34,5 +34,31 @@ namespace OxGKit.InputSystem.Editor
 
             ProjectWindowUtil.CreateScriptAssetFromTemplateFile(finalPath, "NewTplInputAction.cs");
         }
+
+        /// <summary>
+        /// Create the script from the same template directly at the asset path, without the name editing of the Project window (for automation, e.g. Unity CLI)
+        /// </summary>
+        /// <param name="assetPath">e.g. Assets/Scripts/MoveInput.cs (the folder must exist, an existing file is never overwritten)</param>
+        /// <returns>The asset path of the created script</returns>
+        public static string CreateScriptTplInputBindingCompositeAtPath(string assetPath)
+        {
+            string currentPath = _pathFinder;
+            string finalPath = currentPath.Replace("InputSystemCreateScriptEditor.cs", "") + TPL_INPUT_BINDING_COMPOSITE_SCRIPT_PATH;
+
+            return ScriptTemplateCreator.Create(finalPath, assetPath);
+        }
+
+        /// <summary>
+        /// Create the script from the same template directly at the asset path, without the name editing of the Project window (for automation, e.g. Unity CLI)
+        /// </summary>
+        /// <param name="assetPath">e.g. Assets/Scripts/PlayerAction.cs (the folder must exist, an existing file is never overwritten)</param>
+        /// <returns>The asset path of the created script</returns>
+        public static string CreateScriptTplInputActionAtPath(string assetPath)
+        {
+            string currentPath = _pathFinder;
+            string finalPath = currentPath.Replace("InputSystemCreateScriptEditor.cs", "") + TPL_INPUT_ACTION_SCRIPT_PATH;
+
+            return ScriptTemplateCreator.Create(finalPath, assetPath);
+        }
     }
 }

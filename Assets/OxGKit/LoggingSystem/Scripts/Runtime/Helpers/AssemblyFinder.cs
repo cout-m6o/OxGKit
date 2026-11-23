@@ -8,22 +8,21 @@ namespace OxGKit.LoggingSystem
     {
         public static List<Type> GetAssignableTypes(Type parentType)
         {
-            List<Type> allTypes = new List<Type>();
+            List<Type> result = new List<Type>();
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (Assembly assembly in assemblies)
             {
+                // Filter each assembly directly (same order and result as before,
+                // without copying every type of every assembly into a temporary list first)
                 var types = assembly.GetTypes();
-                allTypes.AddRange(types);
-            }
-
-            List<Type> result = new List<Type>();
-            for (int i = 0; i < allTypes.Count; i++)
-            {
-                Type type = allTypes[i];
-                if (parentType.IsAssignableFrom(type))
+                for (int i = 0; i < types.Length; i++)
                 {
-                    if (type.Name == parentType.Name) continue;
-                    result.Add(type);
+                    Type type = types[i];
+                    if (parentType.IsAssignableFrom(type))
+                    {
+                        if (type.Name == parentType.Name) continue;
+                        result.Add(type);
+                    }
                 }
             }
             return result;

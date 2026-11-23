@@ -23,8 +23,7 @@ namespace OxGKit.LoggingSystem.Editor
         {
             this._target = (LoggingLauncher)this.target;
 
-            projectPath = Application.dataPath;
-            keySaver = $"{projectPath}_{nameof(LoggingLauncherEditor)}";
+            _InitKeySaver();
 
             string json = EditorStorage.GetData(keySaver, "_currentLoggersConfig", null);
             if (!string.IsNullOrEmpty(json))
@@ -42,8 +41,21 @@ namespace OxGKit.LoggingSystem.Editor
             this._selectedLogColor = (LogColor)Convert.ToInt32(EditorStorage.GetData(keySaver, "_selectedLogColor", "2"));
         }
 
+        /// <summary>
+        /// 初始編輯器儲存用的鍵值
+        /// </summary>
+        private static void _InitKeySaver()
+        {
+            projectPath = Application.dataPath;
+            keySaver = $"{projectPath}_{nameof(LoggingLauncherEditor)}";
+        }
+
         internal static void SaveEditorLoggersConfigData(LoggersConfig loggersConfig)
         {
+            // 選單功能（LoggingHelper）可能在 Inspector 尚未啟用前就被調用，此時鍵值尚未初始，需先行初始，避免資料被存到空鍵值。
+            if (string.IsNullOrEmpty(keySaver))
+                _InitKeySaver();
+
             string json = JsonUtility.ToJson(loggersConfig);
             EditorStorage.SaveData(keySaver, "_currentLoggersConfig", json);
         }

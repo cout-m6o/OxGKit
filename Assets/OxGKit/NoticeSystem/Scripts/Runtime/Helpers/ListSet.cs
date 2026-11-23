@@ -16,9 +16,9 @@ namespace OxGKit.NoticeSystem
 
         public void Add(T item)
         {
-            if (!this._set.Contains(item))
+            // HashSet.Add returns false when the item already exists (single lookup)
+            if (this._set.Add(item))
             {
-                this._set.Add(item);
                 this._list.Add(item);
             }
         }
@@ -43,9 +43,9 @@ namespace OxGKit.NoticeSystem
 
         public bool Remove(T item)
         {
-            if (this._set.Contains(item))
+            // HashSet.Remove returns false when the item does not exist (single lookup)
+            if (this._set.Remove(item))
             {
-                this._set.Remove(item);
                 this._list.Remove(item);
                 return true;
             }

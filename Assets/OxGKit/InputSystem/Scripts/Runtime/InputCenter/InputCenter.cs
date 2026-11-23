@@ -123,7 +123,9 @@ namespace OxGKit.InputSystem
             {
                 lock (_locker)
                 {
-                    _instance = new InputCenter();
+                    // Double-checked locking (avoids creating a second instance under race conditions)
+                    if (_instance == null)
+                        _instance = new InputCenter();
                 }
             }
             return _instance;
@@ -175,8 +177,8 @@ namespace OxGKit.InputSystem
 
         protected TIInputActionCollection GetControlMap<TIInputActionCollection>(int id) where TIInputActionCollection : IInputActionCollection
         {
-            if (!this.HasControlMap(id)) return default;
-            return (TIInputActionCollection)this._dictControlMaps[id].inputActionCollection;
+            if (!this._dictControlMaps.TryGetValue(id, out var ctrlMap)) return default;
+            return (TIInputActionCollection)ctrlMap.inputActionCollection;
         }
 
         /// <summary>
@@ -188,13 +190,12 @@ namespace OxGKit.InputSystem
         {
             var type = typeof(TIInputActionCollection);
             var id = type.GetHashCode();
-            if (!this.HasControlMap(id))
+            if (!this._dictControlMaps.TryGetValue(id, out var ctrlMap))
             {
                 Logging.PrintError<Logger>($"[ControlMap] <{type.Name}> cannot found.");
                 return;
             }
 
-            var ctrlMap = this._dictControlMaps[id];
             if (active)
             {
                 ctrlMap.inputActionCollection.Enable();
@@ -205,6 +206,10 @@ namespace OxGKit.InputSystem
                 ctrlMap.inputActionCollection.Disable();
                 ctrlMap.activeSelf = false;
             }
+
+            // ControlMap is a struct, the modified copy must be written back
+            // (otherwise activeSelf is never updated and IsActive always returns true)
+            this._dictControlMaps[id] = ctrlMap;
         }
 
         /// <summary>
@@ -216,13 +221,12 @@ namespace OxGKit.InputSystem
         {
             var type = typeof(TIInputActionCollection);
             var id = type.GetHashCode();
-            if (!this.HasControlMap(id))
+            if (!this._dictControlMaps.TryGetValue(id, out var ctrlMap))
             {
                 Logging.PrintError<Logger>($"[ControlMap] <{type.Name}> cannot found.");
                 return false;
             }
 
-            var ctrlMap = this._dictControlMaps[id];
             return ctrlMap.activeSelf;
         }
         #endregion
@@ -270,8 +274,8 @@ namespace OxGKit.InputSystem
 
         protected TInputAction GetInputAction<TInputAction>(int id) where TInputAction : IInputAction
         {
-            if (!this.HasInputAction(id)) return default;
-            return (TInputAction)this._dictInputActions[id];
+            if (!this._dictInputActions.TryGetValue(id, out var inputAction)) return default;
+            return (TInputAction)inputAction;
         }
         #endregion
 

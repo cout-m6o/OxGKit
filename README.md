@@ -45,6 +45,48 @@ OxGKit 是基於 Unity 設計於遊戲開發常用的系統工具組 (皆為獨�
 
 ---
 
+## Unity CLI 支援 (AI Agent / 自動化)
+
+各模組的 Editor 入口 (建立模板腳本、日誌配置、ButtonPlus、DOTween GUID 修復等) 皆可透過 [Unity CLI](https://docs.unity.com/en-us/unity-cli) 由終端機、CI 或 AI Agent 直接觸發，結果與在編輯器內點選選單相同，且不需要經過 Project 視窗的命名流程。
+
+**需求**
+
+- Unity 6.0 以上，並安裝 Unity CLI。
+- 專案安裝 Unity Pipeline 套件 (`com.unity.pipeline` 1.x)，於專案目錄執行 `unity pipeline install` 即可 (若安裝時編輯器已開啟，需切換到編輯器視窗，編輯器才會匯入套件)。
+- 專案需在 Unity Editor 中開啟 (CLI 會連線到執行中的編輯器)。
+
+※未安裝 Unity Pipeline 套件時，CLI 相關組件 (`OxGKit.*.Editor.UnityCli`) 不會被編譯，不影響既有專案 (Unity 2021.3 ~ 2022.3 亦不受影響)。
+
+**命令一覽** (執行 `unity command oxgkit` 可列出專案內可用的命令與參數)
+
+| 模組 | 命令 |
+| --- | --- |
+| ActionSystem | `unity command oxgkit.action create --name <Name> [--path <folder>]` |
+| InfiniteScrollView | `unity command oxgkit.infinite_scroll_view create_cell --name <Name> [--path <folder>]`<br>`unity command oxgkit.infinite_scroll_view create_cell_prefab --name <Name> [--path <folder>]` |
+| InputSystem | `unity command oxgkit.input create_action --name <Name> [--path <folder>]`<br>`unity command oxgkit.input create_binding_composite --name <Name> [--path <folder>]` |
+| NoticeSystem | `unity command oxgkit.notice create_condition --name <Name> [--path <folder>]`<br>`unity command oxgkit.notice create_condition_before_scene_load --name <Name> [--path <folder>]`<br>`unity command oxgkit.notice create_condition_registers --name <Name> [--path <folder>]` |
+| SingletonSystem | `unity command oxgkit.singleton create_mono_singleton --name <Name> [--path <folder>]` |
+| LoggingSystem | `unity command oxgkit.logging get_config`<br>`unity command oxgkit.logging create_config --file-type Json\|Bytes [--confirm] [--dry-run]`<br>`unity command oxgkit.logging reload_config`<br>`unity command oxgkit.logging convert_config --file-type Json\|Bytes`<br>`unity command oxgkit.logging set_logger --name <logger> [--enabled true\|false] [--level <levels>] [--color-mode <mode>]`<br>`unity command oxgkit.logging set_master [--enabled true\|false] [--level <levels>] [--color-mode <mode>]`<br>`unity command oxgkit.logging create_settings [--path <folder>]` |
+| ButtonSystem | `unity command oxgkit.button create [--label TextMeshPro\|Legacy] [--parent <handle>]` |
+| TweenSystemFixer | `unity command oxgkit.tween repair_dotween_modules_guid [--dry-run] [--confirm]` |
+| Utilities | `unity command oxgkit.utilities find_missing_scripts [--scope LoadedScenes\|BuildScenes\|BuildScenesIncludeDisabled\|AllScenes\|AllPrefabs]`<br>`unity command oxgkit.utilities adjust_anchors --target <handle>` |
+
+**範例**
+
+```
+unity command oxgkit.action create --name MoveAction --path Assets/Game/Actions
+unity status --until-ready --project-path .
+unity command oxgkit.logging create_config --file-type Json
+unity command oxgkit.logging set_logger --name OxGKit.ActionSystem.Logger --enabled true --level LogWarning,LogError
+```
+
+- 模板類命令產生的內容與 Right-Click Create/OxGKit/... 選單完全相同，資料夾必須已存在，且不會覆蓋既有檔案。
+- 建立腳本後編輯器會自動重新編譯並重載腳本，重載期間任何命令都會以結束代碼 12 (No Pipeline instance found) 結束且不會被執行；請先以 `unity status --until-ready --project-path .` (於專案目錄執行) 等待編輯器就緒，再執行下一個命令，編譯結果可用 `unity command script recompile_status` 確認。
+- 具破壞性的命令 (例如重建日誌配置、重新指定 GUID) 需加上 `--confirm` 才會執行，可先以 `--dry-run` 預覽。
+- 各模組隨附的 AI Agent Skills (Package Manager > Samples > AI Agent Skills) 已包含上述命令與使用規則，AI Agent 會優先透過 Unity CLI 觸發框架的 Editor 入口，而不是自行撰寫等效的內容。
+
+---
+
 ## 工具系統介紹
 
 ## LoggingSystem (dependence LWMyBox)

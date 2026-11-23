@@ -42,6 +42,66 @@ namespace OxGKit.TweenSystemFixer.Editor
             if (!found) Debug.LogError($"Cannot found {_doTweenModulesFileName}, repair failed");
         }
 
+        #region Automation (no selection and no dialog, e.g. Unity CLI)
+        /// <summary>
+        /// The fixed GUID that OxGKit.TweenSystem references
+        /// </summary>
+        public static string doTweenModulesFixedGUID
+        {
+            get { return _doTweenModulesFixedGUID; }
+        }
+
+        /// <summary>
+        /// Find DOTween.Modules.asmdef in the whole Assets folder (no selection needed)
+        /// </summary>
+        /// <returns>The asset path, null when it cannot be found</returns>
+        public static string FindDoTweenModulesAssetPath()
+        {
+            var guids = AssetDatabase.FindAssets("DOTween.Modules t:AssemblyDefinitionAsset", new string[] { "Assets" });
+            foreach (var guid in guids)
+            {
+                var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+                if (Path.GetFileName(assetPath) == _doTweenModulesFileName)
+                    return assetPath;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Same repair as the menu, but it searches the whole Assets folder (no selection needed) and shows no dialog (for automation, e.g. Unity CLI)
+        /// </summary>
+        /// <returns>The asset path of DOTween.Modules.asmdef, null when it cannot be found</returns>
+        public static string RepairDoTweenModulesGUIDInProject()
+        {
+            string assetPath = FindDoTweenModulesAssetPath();
+            if (assetPath == null)
+            {
+                Debug.LogError($"Cannot found {_doTweenModulesFileName}, repair failed");
+                return null;
+            }
+
+            // Already the fixed GUID, nothing to reassign
+            string guid = AssetDatabase.AssetPathToGUID(assetPath);
+            if (guid == _doTweenModulesFixedGUID)
+                return assetPath;
+
+            AssetDatabase.StartAssetEditing();
+            try
+            {
+                AssetGUIDAssigner.ReassignGUID(new string[] { guid }, _doTweenModulesFixedGUID, false);
+            }
+            finally
+            {
+                AssetDatabase.StopAssetEditing();
+            }
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            return assetPath;
+        }
+        #endregion
+
         /// <summary>
         /// Reference https://github.com/jeffjadulco/unity-guid-regenerator
         /// </summary>
@@ -77,7 +137,7 @@ namespace OxGKit.TweenSystemFixer.Editor
                 return finalGuids.ToArray();
             }
 
-            public static void ReassignGUID(string[] selectedGUIDs, string fixedGUID)
+            public static void ReassignGUID(string[] selectedGUIDs, string fixedGUID, bool showDialog = true)
             {
                 var assetGUIDs = AssetDatabase.FindAssets(SearchFilter, SearchDirectories);
 
@@ -219,7 +279,8 @@ namespace OxGKit.TweenSystemFixer.Editor
                     }
                 }
 
-                if (EditorUtility.DisplayDialog($"Fixed {_doTweenModulesFileName} GUID",
+                // The dialog blocks the editor until it is dismissed, an automated caller skips it and only logs the report
+                if (!showDialog || EditorUtility.DisplayDialog($"Fixed {_doTweenModulesFileName} GUID",
                     $"Reassigned {_doTweenModulesFileName} GUID. \nSee console logs for detailed report.", "Done"))
                 {
                     var message = $"Reassigned {_doTweenModulesFileName} GUID to fixed GUID: {_doTweenModulesFixedGUID}\n";

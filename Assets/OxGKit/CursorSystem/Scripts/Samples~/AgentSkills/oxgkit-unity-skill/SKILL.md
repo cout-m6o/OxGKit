@@ -15,12 +15,43 @@ Make the agent behave like an experienced OxGKit.CursorSystem user. The module (
 2. Start with the conclusion, then implementation details.
 3. Verify APIs against the installed package (`Library/PackageCache/com.michaelo.oxgkit.cursorsystem@*` or `Assets/OxGKit/CursorSystem/Scripts` when embedded) and inspect the scene's `CursorManager` state list before writing code; state names are data, not constants — do not invent them.
 4. For WebGL targets, flag browser cursor restrictions (custom cursor size limits, lock-state needing a user gesture) when relevant.
+5. Obey the "Working rules" below: work the way the module ships and go through its Editor entry points.
+
+## Working rules (non-negotiable)
+
+- **The package is the only authority.** How this module is used is defined by the installed package — its source, its samples and its Editor tooling. Follow that usage exactly. Never design your own variant of it: no second cursor manager, cursor-state enum or constants table, state machine or `Cursor.SetCursor` call that bypasses the manager.
+- **Trigger, don't imitate.** Whatever the module's Editor tooling or shipped assets can provide (see "Editor entry points") is obtained through that entry point — the same one a developer uses — and you continue from what it produced. Do not hand-build an equivalent from memory and do not re-implement an Editor tool.
+- **Stay inside the shipped shape.** Configure what the module exposes (serialized fields, public API); do not patch the package, subclass around it or add a parallel mechanism next to it.
+- **No gap-filling.** If the module does not cover a need, say so and ask the developer. Do not close the gap with a rule of your own.
 
 ## Install
 
 - UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/CursorSystem/Scripts`
 - No dependencies.
 - Samples (Package Manager > OxGKit.CursorSystem > Samples): `CursorManager Prefab` (pre-wired manager), `CursorManager Demo`, `AI Agent Skills` (this skill).
+
+## Editor entry points (trigger, don't hand-write)
+
+This module ships no generator: the cursor setup is the `CursorManager` component, taken from the shipped prefab and configured through its serialized state list.
+
+| You need | What a developer does | Agent equivalent |
+| --- | --- | --- |
+| The manager in the boot scene | Package Manager > OxGKit.CursorSystem > Samples > `CursorManager Prefab` > Import, then drag `CursorManager.prefab` into the scene | import the sample (see below), then instantiate the prefab — `unity command prefab instantiate` (Unity CLI) or `PrefabUtility.InstantiatePrefab` (editor code) |
+| A working reference scene | Package Manager > OxGKit.CursorSystem > Samples > `CursorManager Demo` > Import | read it before authoring states |
+
+Importing the `CursorManager Prefab` sample (same as the Import button of Package Manager > OxGKit.CursorSystem > Samples; Unity copies it to `Assets/Samples/OxGKit.CursorSystem/<version>/CursorManager Prefab`):
+
+```csharp
+// Editor code
+var package = UnityEditor.PackageManager.PackageInfo.FindForAssetPath("Packages/com.michaelo.oxgkit.cursorsystem");
+foreach (var sample in UnityEditor.PackageManager.UI.Sample.FindByPackage(package.name, package.version))
+    if (sample.displayName == "CursorManager Prefab" && !sample.isImported)
+        sample.Import(UnityEditor.PackageManager.UI.Sample.ImportOptions.None);
+```
+
+Without Editor access, copy the package's `Samples~/CursorManagerPrefab` folder (with its `.meta` files) to that destination instead. Use this prefab as the manager; do not build a look-alike object for it.
+
+Cursor states are data authored on that component (Inspector, or `unity command component set_properties` / `SerializedObject`); read the existing list before adding to it and never mirror the state names in an enum or constants class of your own.
 
 ## Setup
 

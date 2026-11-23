@@ -15,13 +15,31 @@ Make the agent behave like an experienced OxGKit.PoolSystem user. The module (UP
 2. Start with the conclusion, then implementation details.
 3. Verify APIs against the installed package (`Library/PackageCache/com.michaelo.oxgkit.poolsystem@*` or `Assets/OxGKit/PoolSystem/Scripts` when embedded). Do not invent APIs.
 4. Identify the pool owner (which scene object/system hosts the `NodePool`) and its destroy path before wiring pooled objects.
+5. Obey the "Working rules" below: work the way the module ships and go through its Editor entry points.
+
+## Working rules (non-negotiable)
+
+- **The package is the only authority.** How this module is used is defined by the installed package — its source, its samples and its Editor tooling. Follow that usage exactly. Never design your own variant of it: no home-made pool class, generic object-pool wrapper, pool manager singleton or instantiate/destroy helper that merely "fits" the module.
+- **Trigger, don't imitate.** Whatever the module's Editor tooling or shipped assets can provide (see "Editor entry points") is obtained through that entry point — the same one a developer uses — and you continue from what it produced. Do not hand-build an equivalent from memory and do not re-implement an Editor tool.
+- **Stay inside the shipped shape.** Configure what the module exposes (serialized fields, public API); do not patch the package, subclass around it or add a parallel mechanism next to it.
+- **No gap-filling.** If the module does not cover a need, say so and ask the developer. Do not close the gap with a rule of your own.
 
 ## Install
 
 - UPM git URL: `https://github.com/michael811125/OxGKit.git?path=Assets/OxGKit/PoolSystem/Scripts`
 - Auto dependencies: `com.cysharp.unitask`, `com.domybest.lwmybox`, `com.michaelo.oxgkit.loggingsystem`.
 - Samples (Package Manager > OxGKit.PoolSystem > Samples): `NodePool Demo`, `AI Agent Skills` (this skill).
-- Component: `Add Component > OxGKit > PoolSystem > NodePool`.
+
+## Editor entry points (trigger, don't hand-write)
+
+This module ships no generator: a pool is the `NodePool` component, added the way a developer adds it and configured through its serialized fields.
+
+| You need | What a developer does | Agent equivalent |
+| --- | --- | --- |
+| A pool on a stable owner GameObject | `Add Component > OxGKit > PoolSystem > NodePool` | `unity command component add --target <GameObject> --type OxGKit.PoolSystem.NodePool` (Unity CLI) · menu item `Component/OxGKit/PoolSystem/NodePool` on the selected GameObject · `Undo.AddComponent<OxGKit.PoolSystem.NodePool>(gameObject)` (editor code) |
+| A working reference scene | Package Manager > OxGKit.PoolSystem > Samples > `NodePool Demo` > Import | read it before wiring a pool; do not copy its scripts into the project as a framework layer |
+
+The `unity command ...` forms need Unity 6+, the Unity Pipeline package (`com.unity.pipeline` 1.x — `unity pipeline install`) and the project open in a running Editor; `component add` is one of that package's own commands. After adding the component set `go` (the source prefab) and the other fields listed below — with `unity command component set_properties`, the Inspector or `SerializedObject` in editor code.
 
 ## Inspector fields (verified)
 
@@ -92,6 +110,8 @@ Reset pooled-object state on reuse — either in an `OnEnable` on the pooled obj
 - Gate heavy startup on `IsLoadFinished()` when `initLoadAcrossFrames` is on and you need the full pool warm (e.g., before a wave spawns).
 - The pool destroys its contents in `OnDestroy` — pooled objects must not be needed after the owner dies; conversely, `Put()` after the owner died would re-parent onto a dead transform (guard feature shutdown order).
 - `maxSize` counts pooled (idle) objects; in-flight objects returning to a full pool get destroyed — size the cap to peak concurrency, not average.
+- From v1.0.3 the auto-grow batch honours its own "after spawn count" setting (`autoDelayFrameAfterSpawnCount`); earlier versions used the init setting for it.
+- One `NodePool` component per prefab is the whole pooling mechanism — do not wrap it in a generic pool manager or keep a second list of pooled objects beside it.
 
 ## Verify
 

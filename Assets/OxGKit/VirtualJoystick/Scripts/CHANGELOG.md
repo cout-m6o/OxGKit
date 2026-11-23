@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+## [1.0.2] - 2026-11-23
+- Updated AI Agent Skill (working rules that forbid inventing a parallel convention, entry points: the VirtualJoystickUI Prefab sample and the VirtualJoystick component).
+
 ## [1.0.1] - 2026-07-30
 - Added AI Agent Skills sample (Samples~/AgentSkills/oxgkit-unity-skill).
 - Optimized samples descriptions in package.json.

@@ -97,9 +97,9 @@ public class LoggingDemo : MonoBehaviour
         {
             var loggersConfig = new LoggersConfig
             (
-                new LoggerSetting("LoggingDemo.Logger1", true, LogLevel.Log),
-                new LoggerSetting("LoggingDemo.Logger2", true, LogLevel.LogWarning),
-                new LoggerSetting("LoggingDemo.Logger3", true, LogLevel.Off)
+                new LoggerSettings("LoggingDemo.Logger1", true, LogLevel.LogDebug),
+                new LoggerSettings("LoggingDemo.Logger2", true, LogLevel.LogWarning),
+                new LoggerSettings("LoggingDemo.Logger3", true, LogLevel.Off)
             );
             LoggingLauncher.SetLoggersConfig(loggersConfig);
         }

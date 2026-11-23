@@ -102,7 +102,8 @@ namespace OxGKit.PoolSystem
             int createCount = Mathf.Min(this.autoPutSize, availableSpace);
             if (this._cts == null)
                 this._cts = new CancellationTokenSource();
-            this._Create(createCount, this.autoPutLoadAcrossFrames, this.initDelayFrameAfterSpawnCount, this.autoPutDelayFrame, this._cts).Forget();
+            // Auto-put uses its own "After Spawn Count" option (the init one was passed here, so the auto-put option had no effect)
+            this._Create(createCount, this.autoPutLoadAcrossFrames, this.autoDelayFrameAfterSpawnCount, this.autoPutDelayFrame, this._cts).Forget();
         }
 
         private async UniTaskVoid _Create(int count, bool acrossFrames, int delayFrameAfterSpawnCount, int delayFrame, CancellationTokenSource cts)

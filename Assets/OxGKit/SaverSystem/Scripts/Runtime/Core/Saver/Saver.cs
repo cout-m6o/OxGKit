@@ -43,23 +43,31 @@ namespace OxGKit.SaverSystem
         {
             string content = this.GetString(contentKey);
 
-            Dictionary<string, string> dataMap = ParsingDataMap(content);
-            if (dataMap.ContainsKey(key))
+            // 以「行」為單位尋找該 key 的數據行，僅替換該行的值
+            // （不可對整份文本做子字串取代，否則 key 為其他 key 的結尾時會一併誤改，例如 volume 與 bgm_volume）
+            if (_TryFindDataLine(content, key, 0, out int lineStart, out int lineEnd))
             {
-                content = content.Replace($"{key} {dataMap[key]}", $"{key} {value}");
+                int valueStart = lineStart + key.Length + 1;
+                int valueEnd = lineEnd;
+                // 保留行尾的 \r（CRLF 文本）
+                if (valueEnd > valueStart && content[valueEnd - 1] == '\r')
+                    valueEnd--;
+
+                content = string.Concat(content.Substring(0, valueStart), value, content.Substring(valueEnd));
             }
             else
             {
+                // 文本結尾沒有換行時先補上，避免新數據接在上一行的尾端
+                if (!string.IsNullOrEmpty(content) && content[content.Length - 1] != '\n')
+                    content += "\n";
+
                 content += $"{key} {value}\n";
             }
 
             this.SaveString(contentKey, content);
 
             // Dirty check
-            if (!this._dataMapDirtyFlags.ContainsKey(contentKey))
-                this._dataMapDirtyFlags.Add(contentKey, true);
-            else
-                this._dataMapDirtyFlags[contentKey] = true;
+            this._dataMapDirtyFlags[contentKey] = true;
         }
 
         /// <summary>
@@ -81,26 +89,13 @@ namespace OxGKit.SaverSystem
             if (isDirty)
             {
                 dataMap = ParsingDataMap(content);
-
-                if (!this._dataMaps.ContainsKey(contentKey))
-                    this._dataMaps.Add(contentKey, dataMap);
-                else
-                    this._dataMaps[contentKey] = dataMap;
-
-                if (this._dataMapDirtyFlags.ContainsKey(contentKey))
-                    this._dataMapDirtyFlags[contentKey] = false;
+                this._dataMaps[contentKey] = dataMap;
+                this._dataMapDirtyFlags[contentKey] = false;
             }
-            else
+            else if (!this._dataMaps.TryGetValue(contentKey, out dataMap))
             {
-                if (this._dataMaps.ContainsKey(contentKey))
-                {
-                    dataMap = this._dataMaps[contentKey];
-                }
-                else
-                {
-                    dataMap = ParsingDataMap(content);
-                    this._dataMaps.Add(contentKey, dataMap);
-                }
+                dataMap = ParsingDataMap(content);
+                this._dataMaps.Add(contentKey, dataMap);
             }
 
             dataMap.TryGetValue(key, out string value);
@@ -119,19 +114,19 @@ namespace OxGKit.SaverSystem
         {
             string content = this.GetString(contentKey);
 
-            Dictionary<string, string> dataMap = ParsingDataMap(content);
-            if (dataMap.ContainsKey(key))
+            // 以「行」為單位移除該 key 的數據行（含換行），不影響其他 key
+            int searchStart = 0;
+            while (_TryFindDataLine(content, key, searchStart, out int lineStart, out int lineEnd))
             {
-                content = content.Replace($"{key} {dataMap[key]}\n", string.Empty);
+                int removeEnd = lineEnd < content.Length ? lineEnd + 1 : lineEnd;
+                content = content.Remove(lineStart, removeEnd - lineStart);
+                searchStart = lineStart;
             }
 
             this.SaveString(contentKey, content);
 
             // Dirty check
-            if (!this._dataMapDirtyFlags.ContainsKey(contentKey))
-                this._dataMapDirtyFlags.Add(contentKey, true);
-            else
-                this._dataMapDirtyFlags[contentKey] = true;
+            this._dataMapDirtyFlags[contentKey] = true;
         }
 
         /// <summary>
@@ -141,10 +136,8 @@ namespace OxGKit.SaverSystem
         public void DeleteContext(string contextKey)
         {
             this.DeleteKey(contextKey);
-            if (this._dataMapDirtyFlags.ContainsKey(contextKey))
-                this._dataMapDirtyFlags.Remove(contextKey);
-            if (this._dataMaps.ContainsKey(contextKey))
-                this._dataMaps.Remove(contextKey);
+            this._dataMapDirtyFlags.Remove(contextKey);
+            this._dataMaps.Remove(contextKey);
         }
 
         /// <summary>
@@ -159,20 +152,86 @@ namespace OxGKit.SaverSystem
             if (string.IsNullOrEmpty(content))
                 return dataMap;
 
-            var lines = content.Split('\n');
-            foreach (var readLine in lines)
+            // 直接掃描文本逐行解析（規則與結果同先前的 Split 寫法，但不再產生每行的字串與陣列）
+            int length = content.Length;
+            int lineStart = 0;
+            while (lineStart <= length)
             {
-                if (readLine.IndexOf('#') != -1 && readLine[0] == '#')
-                    continue;
-                var args = readLine.Split(' ', 2);
-                if (args.Length >= 2)
+                int lineEnd = content.IndexOf('\n', lineStart);
+                if (lineEnd == -1)
+                    lineEnd = length;
+
+                // 略過空行與註解行（# 開頭）
+                if (lineEnd > lineStart && content[lineStart] != '#')
                 {
-                    if (!dataMap.ContainsKey(args[0]))
-                        dataMap.Add(args[0], args[1].Replace("\n", "").Replace("\r", ""));
+                    // 以第一個空白分隔 key 與 value（value 可包含空白）
+                    int spaceIndex = content.IndexOf(' ', lineStart, lineEnd - lineStart);
+                    if (spaceIndex != -1)
+                    {
+                        string key = content.Substring(lineStart, spaceIndex - lineStart);
+                        if (!dataMap.ContainsKey(key))
+                        {
+                            string value = content.Substring(spaceIndex + 1, lineEnd - spaceIndex - 1);
+                            if (value.IndexOf('\r') != -1)
+                                value = value.Replace("\r", "");
+                            dataMap.Add(key, value);
+                        }
+                    }
                 }
+
+                lineStart = lineEnd + 1;
             }
 
             return dataMap;
+        }
+
+        /// <summary>
+        /// 自 startIndex（必須為行首）開始尋找第一個 key 相符的數據行，判斷規則與 ParsingDataMap 一致
+        /// <para> 數據行：非 # 開頭，且第一個空白之前的內容即為 key。 </para>
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="key"></param>
+        /// <param name="startIndex"></param>
+        /// <param name="lineStart">該行起始位置</param>
+        /// <param name="lineEnd">該行結束位置（不含換行）</param>
+        /// <returns></returns>
+        private static bool _TryFindDataLine(string content, string key, int startIndex, out int lineStart, out int lineEnd)
+        {
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
+
+            lineStart = 0;
+            lineEnd = 0;
+
+            if (string.IsNullOrEmpty(content))
+                return false;
+
+            int length = content.Length;
+            int start = startIndex;
+            while (start <= length)
+            {
+                int end = content.IndexOf('\n', start);
+                if (end == -1)
+                    end = length;
+
+                // 略過空行與註解行（# 開頭）
+                if (end > start && content[start] != '#')
+                {
+                    int spaceIndex = content.IndexOf(' ', start, end - start);
+                    if (spaceIndex != -1 &&
+                        spaceIndex - start == key.Length &&
+                        string.CompareOrdinal(content, start, key, 0, key.Length) == 0)
+                    {
+                        lineStart = start;
+                        lineEnd = end;
+                        return true;
+                    }
+                }
+
+                start = end + 1;
+            }
+
+            return false;
         }
 
         public virtual void Dispose()

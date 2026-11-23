@@ -1,5 +1,15 @@
 ## CHANGELOG
 
+## [1.4.9] - 2026-11-23
+- Optimized LRUCache to use a Dictionary inside its existing lock (ConcurrentDictionary.Count/Keys took every internal lock on each Add when full) and to reuse the evicted node (no allocation when full).
+- Optimized ARCCache with a key-to-node lookup, Get/Add/Remove are O(1) instead of linear list scans and a hit no longer allocates (eviction order unchanged, removed the ghost set that was never populated).
+- Optimized LRUKCache by removing the SortedSet that was rebuilt on every eviction, the minimum counter is found in one pass over the LRU list (eviction order unchanged, keys no longer need to be comparable).
+- Modified protected cache members accordingly: LRUKCache.UpdateMinHeap is kept for compatibility but no longer does anything, and ARCCache.MoveToT1/MoveToT2 ignore keys that are not cached.
+- Fixed MissingScriptsFinder "Search in all prefabs" stopping with a NullReferenceException when a .prefab file under Assets is not an imported asset (e.g. inside a "~" folder), such files are skipped now.
+- Fixed the Editor test assembly (OxGKit.Utilities.Editor.Tests) being compiled in every project that installs the package: it now has the UNITY_INCLUDE_TESTS define constraint (like the Runtime tests), so a project without the Test Framework package no longer gets compile errors (NUnit not found) and the tests no longer show up in the Test Runner of consumer projects.
+- Added Unity CLI support: unity command oxgkit.utilities find_missing_scripts / adjust_anchors (optional assembly OxGKit.Utilities.Editor.UnityCli, compiled only when the Unity Pipeline package com.unity.pipeline 1.x is installed).
+- Updated AI Agent Skill (working rules that forbid inventing a parallel convention, Editor entry points with the Unity CLI / editor code / menu / template-file routes, corrected the cache eviction descriptions and the MissingScriptsFinder description).
+
 ## [1.4.8] - 2026-07-30
 - Added AI Agent Skills sample (Samples~/AgentSkills/oxgkit-unity-skill).
 - Added samples section to package.json.

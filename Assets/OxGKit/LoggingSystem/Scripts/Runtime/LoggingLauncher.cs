@@ -434,7 +434,7 @@ namespace OxGKit.LoggingSystem
         /// <param name="result"></param>
         public void ReloadFromLoggersConfig(Action<LoggersConfig> result = null)
         {
-            this.StartCoroutine(this.ReloadFromLoggersConfigAsync());
+            this.StartCoroutine(this.ReloadFromLoggersConfigAsync(result));
         }
 
         /// <summary>

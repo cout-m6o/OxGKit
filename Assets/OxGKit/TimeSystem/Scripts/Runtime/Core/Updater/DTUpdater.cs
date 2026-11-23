@@ -68,7 +68,8 @@ namespace OxGKit.TimeSystem
 
         public DTUpdater()
         {
-            this._createTime = DateTime.Now;
+            // 僅用於計算經過時間，因此取 UTC 時間（無需時區換算，也不受日光節約或時區切換影響）
+            this._createTime = DateTime.UtcNow;
         }
 
         ~DTUpdater()
@@ -128,18 +129,21 @@ namespace OxGKit.TimeSystem
                         this.timeAtLastFrame = this.timeSinceStartup;
 
                         // 計算經過的時間，當前時間 - 最一開始的時間 = 啟動到現在的經過時間（秒）
-                        var timeSpan = DateTime.Now.Subtract(this._createTime);
+                        var timeSpan = DateTime.UtcNow.Subtract(this._createTime);
                         this.timeSinceStartup = (float)timeSpan.TotalSeconds;
 
                         this.onUpdate?.Invoke(this.deltaTime);
                         this.onLateUpdate?.Invoke(this.deltaTime);
                     }
                     else await UniTask.Yield(cts.Token);
-                } while (this._isRunning);
+                    // 僅在此迴圈仍為當前執行者時繼續（Stop 後再次 Start 會以新的 cts 啟動新迴圈，舊迴圈必須在此結束）
+                } while (this._isRunning && ReferenceEquals(this._cts, cts));
             }
             catch (Exception ex)
             {
-                this.Stop();
+                // 被取消的迴圈會在 Stop 之後的下一次更新才進入此處，若期間已再次 Start，不可把新啟動的執行一併停止
+                if (ReferenceEquals(this._cts, cts))
+                    this.Stop();
                 throw ex;
             }
         }

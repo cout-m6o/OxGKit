@@ -1,5 +1,16 @@
 ## CHANGELOG
 
+## [1.4.4] - 2026-11-23
+- Added Logging.IsLogActive<TLogging>(LogLevel) to check whether a log call would output before building its message (avoids allocations for logs that are not printed).
+- Optimized CheckLogActive with bitwise checks instead of Enum.HasFlag (same result, no boxing on any scripting backend).
+- Optimized AssemblyFinder.GetAssignableTypes to filter each assembly directly (no temporary list holding every type).
+- Updated AI Agent Skill (documented IsLogActive, corrected the OXGKIT_LOGGER_ON description: calls are not compiled out, no logger is created without the symbol; working rules that forbid inventing a parallel convention, Editor entry points with the Unity CLI / editor code / menu / template-file routes, the config file is never written by hand).
+- Fixed LoggingLauncher.ReloadFromLoggersConfig(result) never invoking its callback (the "Reload From Config" button of the LoggingLauncher inspector could not store the reloaded config).
+- Fixed the Create LoggerConfig.dat menus storing the inspector's cached config under an empty EditorPrefs key when no LoggingLauncher inspector had been shown yet (the inspector kept showing the previous config).
+- Fixed the LoggingDemo sample not compiling (it still used LoggerSetting and LogLevel.Log, which were renamed to LoggerSettings in v1.4.0 and LogLevel.LogDebug in v1.3.1).
+- Added LoggingHelper automation methods (no selection or inspector needed): GetConfigFilePath, TryReadConfig, SaveConfig, CreateConfig, ReloadConfig (keeps existing settings, adds new loggers, removes missing ones) and ConvertConfig.
+- Added Unity CLI support: unity command oxgkit.logging get_config / create_config / reload_config / convert_config / set_logger / set_master / create_settings (optional assembly OxGKit.LoggingSystem.Editor.UnityCli, compiled only when the Unity Pipeline package com.unity.pipeline 1.x is installed).
+
 ## [1.4.3] - 2026-07-30
 - Added AI Agent Skills sample (Samples~/AgentSkills/oxgkit-unity-skill).
 - Optimized samples descriptions in package.json.

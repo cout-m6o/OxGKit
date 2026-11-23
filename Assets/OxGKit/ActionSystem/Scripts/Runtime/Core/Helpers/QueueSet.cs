@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OxGKit.ActionSystem
 {
     public class QueueSet<T>
     {
+        // Created on first Enqueue (every action owns a sub action QueueSet that usually stays empty)
         private HashSet<T> _set;
         private Queue<T> _queue;
 
@@ -15,15 +16,19 @@ namespace OxGKit.ActionSystem
 
         public QueueSet()
         {
-            this._set = new HashSet<T>();
-            this._queue = new Queue<T>();
         }
 
         public void Enqueue(T item)
         {
-            if (!this._set.Contains(item))
+            if (this._set == null)
             {
-                this._set.Add(item);
+                this._set = new HashSet<T>();
+                this._queue = new Queue<T>();
+            }
+
+            // HashSet.Add returns false when the item already exists (single lookup)
+            if (this._set.Add(item))
+            {
                 this._queue.Enqueue(item);
                 this._snapshot = null;
             }
@@ -31,6 +36,13 @@ namespace OxGKit.ActionSystem
 
         public T Dequeue()
         {
+            if (this._queue == null)
+            {
+                this._set = new HashSet<T>();
+                this._queue = new Queue<T>();
+            }
+
+            // Throws InvalidOperationException when empty (same as before)
             T item = this._queue.Dequeue();
             this._set.Remove(item);
             this._snapshot = null;
@@ -39,10 +51,18 @@ namespace OxGKit.ActionSystem
 
         public bool Remove(T item)
         {
-            if (this._set.Contains(item))
+            if (this._set != null && this._set.Remove(item))
             {
-                this._set.Remove(item);
-                this._queue = new Queue<T>(this._queue.Where(x => !EqualityComparer<T>.Default.Equals(x, item)));
+                // Rotate the queue once in place and drop the matching item
+                // (keeps the order, without rebuilding a new Queue through LINQ)
+                var comparer = EqualityComparer<T>.Default;
+                int count = this._queue.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    T current = this._queue.Dequeue();
+                    if (!comparer.Equals(current, item))
+                        this._queue.Enqueue(current);
+                }
                 this._snapshot = null;
                 return true;
             }
@@ -51,26 +71,29 @@ namespace OxGKit.ActionSystem
 
         public void Clear()
         {
-            this._set.Clear();
-            this._queue.Clear();
+            if (this._set != null)
+            {
+                this._set.Clear();
+                this._queue.Clear();
+            }
             this._snapshot = null;
         }
 
         public bool Contains(T item)
         {
-            return this._set.Contains(item);
+            return this._set != null && this._set.Contains(item);
         }
 
         public int Count
         {
-            get { return this._queue.Count; }
+            get { return this._queue != null ? this._queue.Count : 0; }
         }
 
         public T[] ToArray()
         {
             // Reuse the cached snapshot while the collection is unchanged (avoids per-frame allocations)
             if (this._snapshot == null)
-                this._snapshot = this._queue.ToArray();
+                this._snapshot = (this._queue == null || this._queue.Count == 0) ? Array.Empty<T>() : this._queue.ToArray();
             return this._snapshot;
         }
     }

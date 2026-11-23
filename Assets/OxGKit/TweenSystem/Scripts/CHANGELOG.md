@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+## [1.0.5] - 2026-11-23
+- Optimized DoTweenAnim by removing the duplicated interval timer creation in every tween constructor, and GetMaxDurationTween no longer allocates (same result).
+- Updated AI Agent Skill (working rules that forbid inventing a parallel convention, entry points for the DoTweenAnim / DoTweenAnimEvent components and the DOTween.Modules GUID repair).
+
 ## [1.0.4] - 2026-07-30
 - Added AI Agent Skills sample (Samples~/AgentSkills/oxgkit-unity-skill).
 - Optimized samples descriptions in package.json.

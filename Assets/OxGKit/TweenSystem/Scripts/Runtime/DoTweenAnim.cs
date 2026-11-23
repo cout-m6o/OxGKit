@@ -156,7 +156,7 @@ namespace OxGKit.TweenSystem
 
             public TweenPosition()
             {
-                this.intervalTimer = new DeltaTimer();
+                // intervalTimer is already created by the TweenBase constructor (creating it again here only discarded the first one)
             }
 
             public void Init(Vector3 vec3)
@@ -398,7 +398,7 @@ namespace OxGKit.TweenSystem
 
             public TweenRotation()
             {
-                this.intervalTimer = new DeltaTimer();
+                // intervalTimer is already created by the TweenBase constructor (creating it again here only discarded the first one)
             }
 
             public void Init(Vector3 angle)
@@ -605,7 +605,7 @@ namespace OxGKit.TweenSystem
 
             public TweenScale()
             {
-                this.intervalTimer = new DeltaTimer();
+                // intervalTimer is already created by the TweenBase constructor (creating it again here only discarded the first one)
             }
 
             public void Init(Vector3 scale)
@@ -808,7 +808,7 @@ namespace OxGKit.TweenSystem
 
             public TweenSize()
             {
-                this.intervalTimer = new DeltaTimer();
+                // intervalTimer is already created by the TweenBase constructor (creating it again here only discarded the first one)
             }
 
             public void Init(Vector2 size)
@@ -1022,7 +1022,7 @@ namespace OxGKit.TweenSystem
 
             public TweenAlpha()
             {
-                this.intervalTimer = new DeltaTimer();
+                // intervalTimer is already created by the TweenBase constructor (creating it again here only discarded the first one)
             }
 
             public void Init(float alpha)
@@ -1235,7 +1235,7 @@ namespace OxGKit.TweenSystem
 
             public TweenImgColor()
             {
-                this.intervalTimer = new DeltaTimer();
+                // intervalTimer is already created by the TweenBase constructor (creating it again here only discarded the first one)
             }
 
             public void Init(Color color)
@@ -1448,7 +1448,7 @@ namespace OxGKit.TweenSystem
 
             public TweenSprColor()
             {
-                this.intervalTimer = new DeltaTimer();
+                // intervalTimer is already created by the TweenBase constructor (creating it again here only discarded the first one)
             }
 
             public void Init(Color color)
@@ -2033,12 +2033,24 @@ namespace OxGKit.TweenSystem
         /// <returns></returns>
         public TweenBase GetMaxDurationTween()
         {
-            List<TweenBase> tweens = this.GetTweens();
-            if (tweens.Count == 0) return null;
-
             // Get max of duration time
-            TweenBase maxDurationTween = tweens.Aggregate((a, b) => a.duration > b.duration ? a : b);
+            // (compares in the same order as GetTweens and keeps the later tween on equal durations,
+            // same result as the previous List + Aggregate, without allocating on every play)
+            TweenBase maxDurationTween = null;
+            if (this.tPositionOn) maxDurationTween = _GetLongerDurationTween(maxDurationTween, this._tPosition);
+            if (this.tRotationOn) maxDurationTween = _GetLongerDurationTween(maxDurationTween, this._tRotation);
+            if (this.tScaleOn) maxDurationTween = _GetLongerDurationTween(maxDurationTween, this._tScale);
+            if (this.tSizeOn) maxDurationTween = _GetLongerDurationTween(maxDurationTween, this._tSize);
+            if (this.tAlphaOn) maxDurationTween = _GetLongerDurationTween(maxDurationTween, this._tAlpha);
+            if (this.tImgColorOn) maxDurationTween = _GetLongerDurationTween(maxDurationTween, this._tImgColor);
+            if (this.tSprColorOn) maxDurationTween = _GetLongerDurationTween(maxDurationTween, this._tSprColor);
             return maxDurationTween;
+        }
+
+        private static TweenBase _GetLongerDurationTween(TweenBase a, TweenBase b)
+        {
+            if (a == null) return b;
+            return a.duration > b.duration ? a : b;
         }
         #endregion
 

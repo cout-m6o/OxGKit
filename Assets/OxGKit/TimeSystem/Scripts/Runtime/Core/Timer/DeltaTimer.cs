@@ -28,10 +28,6 @@
             if (autoPlay) this.Play();
         }
 
-        ~DeltaTimer()
-        {
-        }
-
         /// <summary>
         /// 需要透過 MonoBehaviour 的 Update 驅動 Timer
         /// </summary>

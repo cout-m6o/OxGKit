@@ -63,9 +63,8 @@ namespace OxGKit.NoticeSystem
             if (_dictNoticeConditions.ContainsKey(conditionId))
             {
                 // 檢查是否有符合 condition id 的通知物件
-                if (_dictNoticeItems.ContainsKey(conditionId))
+                if (_dictNoticeItems.TryGetValue(conditionId, out ListSet<NoticeItem> noticeItems))
                 {
-                    ListSet<NoticeItem> noticeItems = _dictNoticeItems[conditionId];
                     for (int i = noticeItems.Count - 1; i >= 0; i--)
                     {
                         var noticeItem = noticeItems.GetList()[i];
@@ -127,10 +126,8 @@ namespace OxGKit.NoticeSystem
         /// <param name="conditionId"></param>
         internal static void NotifyCollector(int conditionId)
         {
-            if (!_limiterConditionIds.Contains(conditionId))
-            {
-                _limiterConditionIds.Add(conditionId);
-            }
+            // HashSet.Add ignores the id that already exists (single lookup)
+            _limiterConditionIds.Add(conditionId);
         }
 
         /// <summary>
@@ -159,10 +156,9 @@ namespace OxGKit.NoticeSystem
         internal static bool CheckCondition(int conditionId, object data)
         {
             // 檢查是否有符合的 condition id 的條件池
-            if (_dictNoticeConditions.ContainsKey(conditionId))
+            if (_dictNoticeConditions.TryGetValue(conditionId, out NoticeCondition noticeCondition))
             {
                 // 進行條件過濾（針對不同的數據進行判斷）
-                NoticeCondition noticeCondition = _dictNoticeConditions[conditionId];
                 return noticeCondition.ShowCondition(data);
             }
             else Logging.PrintError<Logger>($"[{nameof(NoticeSystem)}] Error Notice Condition Cannot find => Cond Id: {conditionId}");
@@ -177,27 +173,31 @@ namespace OxGKit.NoticeSystem
         /// <param name="item"></param>
         internal static void RegisterNoticeItem(int conditionId, NoticeItem noticeItem)
         {
-            if (_dictNoticeItems.ContainsKey(conditionId))
+            // The messages below read noticeItem.name (allocates a string on every access),
+            // so they are only built when the logger will actually print them
+            bool isLogActive = Logging.IsLogActive<Logger>(LogLevel.LogDebug);
+
+            if (_dictNoticeItems.TryGetValue(conditionId, out ListSet<NoticeItem> noticeItems))
             {
                 // If condition id already has same noticeItem just assign directly (renew)
-                if (_dictNoticeItems[conditionId].Contains(noticeItem))
+                if (noticeItems.Contains(noticeItem))
                 {
-                    _dictNoticeItems[conditionId].Assign(noticeItem);
-                    Logging.Print<Logger>($"[{nameof(NoticeSystem)}] Renew Notice Item {noticeItem.name}");
+                    noticeItems.Assign(noticeItem);
+                    if (isLogActive) Logging.Print<Logger>($"[{nameof(NoticeSystem)}] Renew Notice Item {noticeItem.name}");
                 }
                 else
                 {
                     // Add a noticeItem
-                    _dictNoticeItems[conditionId].Add(noticeItem);
-                    Logging.Print<Logger>($"[{nameof(NoticeSystem)}] Register Notice Item {noticeItem.name}");
+                    noticeItems.Add(noticeItem);
+                    if (isLogActive) Logging.Print<Logger>($"[{nameof(NoticeSystem)}] Register Notice Item {noticeItem.name}");
                 }
             }
             else
             {
-                ListSet<NoticeItem> noticeItems = new ListSet<NoticeItem>();
+                noticeItems = new ListSet<NoticeItem>();
                 noticeItems.Add(noticeItem);
                 _dictNoticeItems.Add(conditionId, noticeItems);
-                Logging.Print<Logger>($"[{nameof(NoticeSystem)}] Register Notice Item {noticeItem.name}");
+                if (isLogActive) Logging.Print<Logger>($"[{nameof(NoticeSystem)}] Register Notice Item {noticeItem.name}");
             }
         }
 
@@ -207,12 +207,15 @@ namespace OxGKit.NoticeSystem
         /// <param name="item"></param>
         internal static void DeregisterNoticeItem(int conditionId, NoticeItem noticeItem)
         {
-            if (_dictNoticeItems.ContainsKey(conditionId))
+            if (_dictNoticeItems.TryGetValue(conditionId, out ListSet<NoticeItem> noticeItems))
             {
-                if (_dictNoticeItems[conditionId].Contains(noticeItem))
+                // Remove returns false when the noticeItem is not registered
+                if (noticeItems.Remove(noticeItem))
                 {
-                    _dictNoticeItems[conditionId].Remove(noticeItem);
-                    Logging.Print<Logger>($"[{nameof(NoticeSystem)}] Deregister Notice Item {noticeItem.name}");
+                    // Build the message (noticeItem.name allocates) only when the logger will actually print it.
+                    // The item may already be destroyed here (deregistered from another script's OnDestroy), its name cannot be read then.
+                    if (Logging.IsLogActive<Logger>(LogLevel.LogDebug))
+                        Logging.Print<Logger>($"[{nameof(NoticeSystem)}] Deregister Notice Item {(noticeItem != null ? noticeItem.name : "(destroyed)")}");
                 }
             }
         }

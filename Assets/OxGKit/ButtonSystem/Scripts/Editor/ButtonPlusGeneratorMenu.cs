@@ -132,6 +132,9 @@ namespace OxGKit.ButtonSystem.Editor
 
             GameObjectUtility.EnsureUniqueNameForSibling(element);
 
+            // 註冊建立物件的 Undo（Unity 內建的 UI 選單是由 ObjectFactory 在建立物件時自動註冊），否則 Undo 之後按鈕與其文字物件會殘留在場景中。
+            // 必須等按鈕的元件與子物件都建立完成後才註冊（太早註冊的話，之後才加入的元件在 Undo 時會被視為 dangling 而產生警告），並且要在設定父物件之前註冊。
+            Undo.RegisterCreatedObjectUndo(element, "Create " + element.name);
             _SetParentAndAlign(element, parent);
             if (!explicitParentChoice) // not a context click, so center in sceneview
                 _SetPositionVisibleinSceneView(parent.GetComponent<RectTransform>(), element.GetComponent<RectTransform>());
